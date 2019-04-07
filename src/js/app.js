@@ -1,18 +1,18 @@
-import Vue from 'vue/dist/vue.js';
-import Hello from '../components/hello.vue';
+const Vue = require('vue/dist/vue.js');
+const components = {
+  deskComponent: require('../components/Desk/Desk.vue').default,
+};
 
-
+console.log(components.deskComponent);
 
 new Vue({
-    el: "#app",
-    data: {
-      posts: [
-      { id: 1, title: 'My journey with Vue' },
-      { id: 2, title: 'Blogging with Vue' },
-      { id: 3, title: 'Why Vue is so fun' }
+  el: "#app",
+  data: {
+    posts: [
+      {id: 1, title: 'Hello, World!'}
     ]
   },
   components: {
-    hello: Hello
+    desk: components.deskComponent
   }
 })

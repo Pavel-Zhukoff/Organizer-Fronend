@@ -11,7 +11,7 @@
 
 <body>
   <div id="app">
-    <hello v-for="post in posts" v-bind:key="post.id" v-bind:post-text="post.title"></hello>
+    <desk v-for="post in posts" v-key="post.id" v-bind:post="post"></desk>
   </div>
   <script src="./dist/js/bundle.js"></script>
 </body>
