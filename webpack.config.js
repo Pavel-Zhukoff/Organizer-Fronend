@@ -4,12 +4,11 @@ const VueLoaderPlugin = require('vue-loader/lib/plugin')
 
 module.exports = {
   entry: {
-    main: './src/js/app.js',
-    //'./src/style/style.scss',
+    'js/bundle.js':'./src/js/app.js'
   },
   output: {
-    path: path.resolve(__dirname, 'dist/js'),
-    filename: 'bundle.js'
+    path: path.resolve(__dirname, 'dist'),
+    filename: '[name]',
   },
   devtool: 'source-map',
   module: {
@@ -24,18 +23,18 @@ module.exports = {
       {
         test: /\.(sass|scss)$/,
         include: path.resolve(__dirname, 'src/style'),
-        use: [  //MiniCssExtractPlugin.loader,
-                "style-loader", // creates style nodes from JS strings
-                "css-loader", // translates CSS into CommonJS
-                "sass-loader", // compiles Sass to CSS, using Node Sass by default
-            ]
+        use: [
+           MiniCssExtractPlugin.loader,
+          'css-loader',
+          'sass-loader',
+        ],
       },
       {
         test: /\.vue$/,
         loader: 'vue-loader',
         options: {
           loaders: {
-            js: 'babel-loader'
+            js: 'babel-loader',
           }
         }
       },

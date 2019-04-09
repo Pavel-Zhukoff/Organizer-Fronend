@@ -1,1 +1,27 @@
+// Required
+@import '../../node_modules/bootstrap/scss/functions';
+@import '../../node_modules/bootstrap/scss/variables';
+@import 'vars';
+@import '../../node_modules/bootstrap/scss/mixins';
 
+// Optional
+@import '../../node_modules/bootstrap/scss/reboot';
+@import '../../node_modules/bootstrap/scss/type';
+@import '../../node_modules/bootstrap/scss/images';
+@import '../../node_modules/bootstrap/scss/code';
+@import '../../node_modules/bootstrap/scss/grid';
+
+body {
+  background-color: map-get($colors, 'background');
+  color: map-get($colors, 'base');
+  font-family: 'Montserrat', sans-serif;
+  font-weight: $font-weight-base;
+}
+
+a {
+  text-decoration: none;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+  font-weight: $font-weight-heading;
+}
