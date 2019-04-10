@@ -47,8 +47,12 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
   font-weight: $font-weight-base;
 }
 
-nav {
+header {
   background-color: map-get($colors, 'base');
+}
+
+nav {
+  background-color: map-get($colors, 'background');
   display: flex;
   justify-content: space-between;
   padding: .5rem 0;
@@ -72,10 +76,66 @@ nav {
     display: block;
     font-size: 3rem;
     font-weight: $font-weight-heading;
-    margin-top: calc( (100% - 3rem) / 2);
+    margin-top: calc( (50% - 3rem) / 2);
+    text-align: center;
   }
 }
 
 .card {
+  background-color: map-get($colors, 'base');
+  border-radius: .125rem;
+  display: flex;
+  flex-flow: column;
+  padding: 1.5rem 2rem;
+  position: relative;
 
+  @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+    padding: 1.25rem 1.5rem;
+  }
+
+  .card-button-remove {
+    cursor: pointer;
+    height: 2rem;
+    position: absolute;
+    right: 2rem;
+    top: 1.75rem;
+    width: 2rem;
+
+    @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+      right: 1.5rem;
+      top: 1.5rem;
+    }
+
+    &:hover {
+      &::after,&::before {
+        background-color: map-get($colors, 'background');
+        opacity: .75;
+      }
+    }
+
+    &::after,&::before {
+      background-color: map-get($colors, 'heading');
+      content: '';
+      display: block;
+      height: .25rem;
+      transition: background-color 1s, opacity .5s;
+      width: 100%;
+    }
+
+    &::after {
+      margin-top: -.25rem;
+      transform: rotate(45deg);
+    }
+
+    &::before {
+      margin-top: .75rem;
+      transform: rotate(-45deg);
+    }
+  }
+
+  .card-title {}
+
+  .card-content {
+    color: map-get($colors, 'background');
+  }
 }

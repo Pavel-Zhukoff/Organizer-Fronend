@@ -1,6 +1,9 @@
 <template lang="html">
   <header class="container-fluid">
     <div class="row justify-content-center">
+      <div class="col-12 text-center py-3">
+        <h2 class="title">Журнал заметок</h2>
+      </div>
       <navigation :links="links"></navigation>
     </div>
   </header>
@@ -14,11 +17,6 @@ export default {
       links: [
         {id: 1, url: '/someLink', text: 'asdasd'},
 			]
-    }
-  },
-  computed: {
-    itemsGet: function () {
-      return this.cards.length > 0 ? true: false;
     }
   },
   components: {

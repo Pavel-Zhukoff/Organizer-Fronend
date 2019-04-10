@@ -1,15 +1,17 @@
 <template>
 
-<div class="card">
-  <span class="card-button-remove">х</span>
-  <div class="card-title">
-    <h2 class="title">{{ card.title }}</h2>
-    <h3 class="subtitle">{{ card.subtitle }}</h3>
-  </div>
-  <div class="card-content">
-    <p>
-      {{ card.text }}
-    </p>
+<div class="col-lg-4 col-md-6 col-12">
+  <div class="card">
+    <div class="card-button-remove"></div>
+    <div class="card-title">
+      <h2 class="title">{{ card.title }}</h2>
+      <h3 class="subtitle">{{ card.subtitle }}</h3>
+    </div>
+    <div class="card-content">
+      <p>
+        {{ card.text }}
+      </p>
+    </div>
   </div>
 </div>
 

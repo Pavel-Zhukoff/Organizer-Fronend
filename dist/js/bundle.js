@@ -606,6 +606,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -614,11 +617,6 @@ __webpack_require__.r(__webpack_exports__);
       links: [
         {id: 1, url: '/someLink', text: 'asdasd'},
 			]
-    }
-  },
-  computed: {
-    itemsGet: function () {
-      return this.cards.length > 0 ? true: false;
     }
   },
   components: {
@@ -700,6 +698,8 @@ __webpack_require__.r(__webpack_exports__);
   data () {
     return {
       cards: [
+        {id: 1, title: 'Заголовок #1', subtitle: 'Примечание', text: 'Какой-то текст. Заметка о чем-то. Купить хлеба!'},
+        {id: 2, title: 'Заголовок #2', subtitle: 'Примечание', text: 'Какой-то текст. Заметка о чем-то. Купить хлеба!'},
 			]
     }
   },
@@ -725,6 +725,8 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+//
+//
 //
 //
 //
@@ -798,12 +800,25 @@ var render = function() {
     _c(
       "div",
       { staticClass: "row justify-content-center" },
-      [_c("navigation", { attrs: { links: _vm.links } })],
+      [
+        _vm._m(0),
+        _vm._v(" "),
+        _c("navigation", { attrs: { links: _vm.links } })
+      ],
       1
     )
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col-12 text-center py-3" }, [
+      _c("h2", { staticClass: "title" }, [_vm._v("Журнал заметок")])
+    ])
+  }
+]
 render._withStripped = true
 
 
@@ -864,24 +879,18 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _vm.cardsExists
-    ? _c("div", { staticClass: "container" }, [
-        _vm.cardsExists
-          ? _c(
-              "div",
-              { staticClass: "row" },
-              _vm._l(_vm.cards, function(card) {
-                return _c("desk-card", {
-                  key: card.id,
-                  staticClass: "col-lg-4 col-md-3 col-12",
-                  attrs: { card: card }
-                })
-              }),
-              1
-            )
-          : _c("div", { staticClass: "row" }, [_vm._m(0)])
-      ])
-    : _vm._e()
+  return _c("div", { staticClass: "container" }, [
+    _vm.cardsExists
+      ? _c(
+          "div",
+          { staticClass: "row py-3" },
+          _vm._l(_vm.cards, function(card) {
+            return _c("desk-card", { key: card.id, attrs: { card: card } })
+          }),
+          1
+        )
+      : _c("div", { staticClass: "row" }, [_vm._m(0)])
+  ])
 }
 var staticRenderFns = [
   function() {
@@ -918,17 +927,21 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "card" }, [
-    _c("span", { staticClass: "card-button-remove" }, [_vm._v("х")]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-title" }, [
-      _c("h2", { staticClass: "title" }, [_vm._v(_vm._s(_vm.card.title))]),
+  return _c("div", { staticClass: "col-lg-4 col-md-6 col-12" }, [
+    _c("div", { staticClass: "card" }, [
+      _c("div", { staticClass: "card-button-remove" }),
       _vm._v(" "),
-      _c("h3", { staticClass: "subtitle" }, [_vm._v(_vm._s(_vm.card.subtitle))])
-    ]),
-    _vm._v(" "),
-    _c("div", { staticClass: "card-content" }, [
-      _c("p", [_vm._v("\r\n      " + _vm._s(_vm.card.text) + "\r\n    ")])
+      _c("div", { staticClass: "card-title" }, [
+        _c("h2", { staticClass: "title" }, [_vm._v(_vm._s(_vm.card.title))]),
+        _vm._v(" "),
+        _c("h3", { staticClass: "subtitle" }, [
+          _vm._v(_vm._s(_vm.card.subtitle))
+        ])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-content" }, [
+        _c("p", [_vm._v("\r\n        " + _vm._s(_vm.card.text) + "\r\n      ")])
+      ])
     ])
   ])
 }
