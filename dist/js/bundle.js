@@ -615,8 +615,16 @@ __webpack_require__.r(__webpack_exports__);
   data () {
     return {
       links: [
-        {id: 1, url: '/someLink', text: 'asdasd'},
+        {id: 1, url: '#add', text: 'Добавить'},
 			]
+    }
+  },
+  created: function () {
+    //this.links.push({id: 2, url: '#exit', text: 'Выйти'});
+  },
+  computed: {
+    userName: function () {
+      return '<a href="#enter">Гостя</a>';
     }
   },
   components: {
@@ -801,7 +809,12 @@ var render = function() {
       "div",
       { staticClass: "row justify-content-center" },
       [
-        _vm._m(0),
+        _c("div", { staticClass: "col-12 text-center py-3" }, [
+          _c("h2", { staticClass: "title" }, [
+            _vm._v("Журнал заметок, "),
+            _c("span", { domProps: { innerHTML: _vm._s(_vm.userName) } })
+          ])
+        ]),
         _vm._v(" "),
         _c("navigation", { attrs: { links: _vm.links } })
       ],
@@ -809,16 +822,7 @@ var render = function() {
     )
   ])
 }
-var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 text-center py-3" }, [
-      _c("h2", { staticClass: "title" }, [_vm._v("Журнал заметок")])
-    ])
-  }
-]
+var staticRenderFns = []
 render._withStripped = true
 
 
@@ -927,9 +931,12 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-lg-4 col-md-6 col-12" }, [
+  return _c("div", { staticClass: "col-lg-4 col-md-6 col-12 mb-md-0 mb-2" }, [
     _c("div", { staticClass: "card" }, [
-      _c("div", { staticClass: "card-button-remove" }),
+      _c("div", {
+        staticClass: "card-button-remove",
+        attrs: { "data-target": _vm.card.id }
+      }),
       _vm._v(" "),
       _c("div", { staticClass: "card-title" }, [
         _c("h2", { staticClass: "title" }, [_vm._v(_vm._s(_vm.card.title))]),

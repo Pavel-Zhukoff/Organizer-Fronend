@@ -2,7 +2,7 @@
   <header class="container-fluid">
     <div class="row justify-content-center">
       <div class="col-12 text-center py-3">
-        <h2 class="title">Журнал заметок</h2>
+        <h2 class="title">Журнал заметок, <span v-html="userName"></span></h2>
       </div>
       <navigation :links="links"></navigation>
     </div>
@@ -15,8 +15,16 @@ export default {
   data () {
     return {
       links: [
-        {id: 1, url: '/someLink', text: 'asdasd'},
+        {id: 1, url: '#add', text: 'Добавить'},
 			]
+    }
+  },
+  created: function () {
+    //this.links.push({id: 2, url: '#exit', text: 'Выйти'});
+  },
+  computed: {
+    userName: function () {
+      return '<a href="#enter">Гостя</a>';
     }
   },
   components: {
