@@ -1,14 +1,20 @@
 <template>
 
-  <desk></desk>
+  <div>
+    <header-component></header-component>
+    <desk></desk>
+  </div>
 
 </template>
 
 <script>
-import deskComponent from './components/Desk.vue' ;
+import HeaderComponent from './Common/Header.vue';
+import DeskComponent from './Desk/Desk.vue' ;
+
 export default {
   components: {
-    'desk': deskComponent
+    'header-component': HeaderComponent,
+    'desk': DeskComponent
   }
 }
 </script>
