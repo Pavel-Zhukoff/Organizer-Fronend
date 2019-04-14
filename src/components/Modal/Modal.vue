@@ -6,12 +6,12 @@
           <div class="col-lg-6 col-md-8 col-10">
             <div class="modal">
               <div class="modal-title">
-                <h2 class="title">Заголовок</h2>
+                <h2 class="title">{{ title }}</h2>
               </div>
               <div class="modal-body">
-                <p>
-                  Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta quis dolore voluptate, quod eveniet veritatis? Hic placeat quo vel. Delectus consequuntur iusto voluptatibus nemo ipsum, quod animi sint deleniti expedita.
-                </p>
+                <form-component
+                  :params="form"
+                ></form-component>
               </div>
             </div>
           </div>
@@ -26,11 +26,21 @@
 </template>
 
 <script>
+import FormComponent from '../Form/Form.vue';
+
 export default {
-  data () {
-    return {
-      show: false
-    }
+  props: {
+    title: String,
+    form: Object,
+    show: {
+      type: Boolean,
+      default: function() {
+        return false;
+      },
+    },
+  },
+  components: {
+    'form-component': FormComponent,
   }
 }
 </script>

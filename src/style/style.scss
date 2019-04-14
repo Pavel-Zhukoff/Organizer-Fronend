@@ -59,6 +59,7 @@ nav {
 
   .nav-item {
     color: map-get($colors, 'heading');
+    cursor: pointer;
     font-size: 2rem;
     font-weight: $font-weight-heading;
     margin: 0;
@@ -209,10 +210,22 @@ nav {
 }
 
 .guest-ac {
+  cursor: pointer;
   text-decoration: underline;
 
   &:hover {
     color: map-get($colors, 'subheading');
     text-decoration: none;
   }
+}
+
+.form-group {
+  font-size: 1.25rem;
+  margin: 1.5rem 0;
+  width: 100%;
+}
+
+input, textarea, label {
+  display: block;
+  width: 100%;
 }

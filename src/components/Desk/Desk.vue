@@ -26,15 +26,19 @@ import DeskCardComponent from './DeskCard.vue' ;
 export default {
   data () {
     return {
-      cards: [
-        {id: 1, title: 'Заголовок #1', subtitle: 'Примечание', text: 'Какой-то текст. Заметка о чем-то. Купить хлеба!'},
-        {id: 2, title: 'Заголовок #2', subtitle: 'Примечание', text: 'Какой-то текст. Заметка о чем-то. Купить хлеба!'},
-			]
+      cards: this.getCards()
     }
   },
   computed: {
     cardsExists: function () {
-      return this.cards.length > 0 ? true: false;
+      return this.cards.length > 0;
+    }
+  },
+  methods: {
+    getCards: function () {
+      return [
+        {id: 1, title: 'Заголовок #1', subtitle: 'Примечание', text: 'Какой-то текст. Заметка о чем-то. Купить хлеба!'},
+        ];
     }
   },
   components: {
