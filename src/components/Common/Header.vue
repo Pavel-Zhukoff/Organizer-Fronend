@@ -15,7 +15,7 @@ export default {
   data () {
     return {
       links: [
-        {id: 1, url: '#add', text: 'Добавить'},
+        {id: 1, text: 'Добавить'},
 			]
     }
   },
@@ -24,7 +24,12 @@ export default {
   },
   computed: {
     userName: function () {
-      return '<a href="#enter">Гостя</a>';
+      return '<span class="guest-ac" v-on:click="enter">Гостя</span>';
+    }
+  },
+  methods: {
+    enter: function () {
+      console.log();
     }
   },
   components: {

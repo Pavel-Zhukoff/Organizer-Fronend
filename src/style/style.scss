@@ -108,7 +108,7 @@ nav {
 
     &:hover {
       &::after,&::before {
-        background-color: map-get($colors, 'background');
+        background-color: map-get($colors, 'subheading');
         opacity: .75;
       }
     }
@@ -133,9 +133,86 @@ nav {
     }
   }
 
-  .card-title {}
-
   .card-content {
     color: map-get($colors, 'background');
+  }
+}
+
+.modal {
+  background-color: map-get($colors, 'base');
+  border-radius: .25rem;
+  padding: 1.5rem 2rem;
+  width: 100%;
+
+  .modal-body {
+    color: map-get($colors, 'background');
+  }
+
+  &-overlay {
+    background-color: rgba(map-get($colors, 'background'), .6);
+    height: 100%;
+    left: 0;
+    position: fixed;
+    top: 0;
+    width: 100%;
+  }
+
+  &-close {
+    cursor: pointer;
+    height: 2rem;
+    position: absolute;
+    right: 2rem;
+    top: 1.75rem;
+    width: 2rem;
+
+    @media screen and (max-width: map-get($grid-breakpoints, 'md')) {
+      right: 1.5rem;
+      top: 1.5rem;
+    }
+
+    &:hover {
+      &::after,&::before {
+        background-color: map-get($colors, 'subheading');
+        opacity: .75;
+      }
+    }
+
+    &::after,&::before {
+      background-color: map-get($colors, 'heading');
+      content: '';
+      display: block;
+      height: .25rem;
+      transition: background-color 1s, opacity .5s;
+      width: 100%;
+    }
+
+    &::after {
+      margin-top: -.25rem;
+      transform: rotate(45deg);
+    }
+
+    &::before {
+      margin-top: .75rem;
+      transform: rotate(-45deg);
+    }
+  }
+}
+
+.fade {
+  &-enter-active, &-leave-active {
+    transition: opacity .5s;
+  }
+
+  &-enter, &-leave-to {
+    opacity: 0;
+  }
+}
+
+.guest-ac {
+  text-decoration: underline;
+
+  &:hover {
+    color: map-get($colors, 'subheading');
+    text-decoration: none;
   }
 }
