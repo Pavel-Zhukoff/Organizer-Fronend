@@ -14,6 +14,13 @@
 
 @import url('https://fonts.googleapis.com/css?family=Montserrat:400,900&subset=cyrillic');
 
+html {
+  font-size: 16px;
+  @media screen and (max-width: map-get($grid-breakpoints, 'sm')) {
+    font-size: 14px;
+  }
+}
+
 body {
   background-color: map-get($colors, 'background');
   color: map-get($colors, 'base');
@@ -84,7 +91,7 @@ nav {
 
 .card {
   background-color: map-get($colors, 'base');
-  border-radius: .125rem;
+  border-radius: $base-radius;
   display: flex;
   flex-flow: column;
   padding: 1.5rem 2rem;
@@ -209,7 +216,7 @@ nav {
   }
 }
 
-.guest-ac {
+.user-name {
   cursor: pointer;
   text-decoration: underline;
 
@@ -228,4 +235,32 @@ nav {
 input, textarea, label {
   display: block;
   width: 100%;
+}
+
+input, textarea {
+  border: 1px solid map-get($colors, 'background');
+  border-radius: $base-radius;
+  outline: 0;
+  padding: .5rem;
+  resize: none;
+
+  &[type="submit"] {
+    background-color: map-get($colors, 'heading');
+    border: 0;
+    color: map-get($colors, 'base');
+    font-size: 2rem;
+    font-weight: $font-weight-heading;
+    margin: 0 auto;
+    text-transform: uppercase;
+    width: 75%;
+
+    @media screen and (max-width: map-get($grid-breakpoints, 'sm')) {
+      font-size: 1.75rem;
+      width: 100%;
+    }
+
+    &:hover {
+      background-color: map-get($colors, 'subheading');
+    }
+  }
 }

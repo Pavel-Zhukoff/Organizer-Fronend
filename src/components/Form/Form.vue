@@ -1,7 +1,9 @@
 <template lang="html">
   <form
-  :action="params.action"
-  :method="params.method">
+  :action="params.action.url"
+  :method="params.method"
+  v-on:submit="params.action.func"
+  >
     <template v-if="inputsExists">
       <input-component
         v-for="input in params.inputs"
@@ -20,7 +22,7 @@
     type="submit"
     name="submit"
     :value="params.text"
-    v-on:click="params.action">
+    >
   </form>
 </template>
 
@@ -34,10 +36,12 @@ export default {
       type: Object,
       default: function () {
         return {
-          action: '#',
+          action: {
+            url: '#',
+            func: function () {},
+          },
           method: 'post',
           text: 'Отправить',
-          action: function () {},
           inputs: [],
           textareas: []
         };

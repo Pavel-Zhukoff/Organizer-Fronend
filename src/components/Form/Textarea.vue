@@ -8,6 +8,7 @@
     <textarea
     :id="params.id + `-` + params.name"
     :name="params.name"
+    :required="params.required"
     ></textarea>
   </div>
 
@@ -22,7 +23,8 @@ export default {
         return {
           id: 0,
           name: 'default',
-          title: 'Заголовок'
+          title: 'Заголовок',
+          required: false,
         };
       }
     }

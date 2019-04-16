@@ -3,11 +3,7 @@
     <div class="row justify-content-center">
       <div class="col-12 text-center py-3">
         <h2 class="title">Журнал заметок,
-          <span
-            v-on:click="user.action"
-            :title="user.title"
-            class="guest-ac"
-            >
+          <span class="user-name">
             {{ user.name }}
           </span>
         </h2>
@@ -27,6 +23,8 @@ export default {
     return {
       links: [
         {id: 1, action: this.actions.newNote, text: 'Добавить'},
+        {id: 2, action: this.actions.enter, text: 'Войти'},
+        {id: 3, action: this.actions.register, text: 'Регистрация'},
 			]
     }
   },
@@ -36,8 +34,6 @@ export default {
   computed: {
     user: function () {
       return {
-        action: this.actions.enter,
-        title: 'Нажмите, чтобы войти',
         name: 'Гостя'
       };
     }

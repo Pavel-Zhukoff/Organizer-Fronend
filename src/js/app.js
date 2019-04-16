@@ -1,6 +1,9 @@
 import Vue from 'vue/dist/vue.js';
 import VueCookies from 'vue-cookies';
+
 import appComponent from '../components/App.vue';
+
+// TODO: Сделать фронтенд для пользователя
 
 Vue.use(VueCookies);
 new Vue({
