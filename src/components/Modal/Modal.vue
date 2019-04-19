@@ -9,9 +9,11 @@
                 <h2 class="title">{{ title }}</h2>
               </div>
               <div class="modal-body">
-                <form-component
+              <template>
+                <form-register
                   :params="form"
-                ></form-component>
+                ></form-register>
+              </template>
               </div>
             </div>
           </div>
@@ -26,12 +28,13 @@
 </template>
 
 <script>
-import FormComponent from '../Form/Form.vue';
+import FormRegister from '../Form/Register.vue';
 
 export default {
   props: {
     title: String,
     form: Object,
+    type: String,
     show: {
       type: Boolean,
       default: function() {
@@ -40,7 +43,7 @@ export default {
     },
   },
   components: {
-    'form-component': FormComponent,
+    'form-register': FormRegister,
   },
   methods: {
     closeModal: function () {

@@ -248,6 +248,7 @@ input, textarea {
     background-color: map-get($colors, 'heading');
     border: 0;
     color: map-get($colors, 'base');
+    cursor: pointer;
     font-size: 2rem;
     font-weight: $font-weight-heading;
     margin: 0 auto;
@@ -257,10 +258,24 @@ input, textarea {
     @media screen and (max-width: map-get($grid-breakpoints, 'sm')) {
       font-size: 1.75rem;
       width: 100%;
+
+      &:hover {
+        background-color: map-get($colors, 'heading');
+      }
+
     }
 
     &:hover {
       background-color: map-get($colors, 'subheading');
     }
+
+    &:disabled {
+      opacity: .75;
+    }
   }
+}
+
+.error {
+  color: red;
+  font-size: .875rem;
 }

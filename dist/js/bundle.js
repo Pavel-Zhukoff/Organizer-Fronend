@@ -2427,7 +2427,8 @@ __webpack_require__.r(__webpack_exports__);
       modalTitle: '',
       modalForm: {},
       modalShow: false,
-    }
+      backendUrl: 'http://organizer-backend',
+    };
   },
   methods: {
     enterFormRender: function() {
@@ -2435,28 +2436,12 @@ __webpack_require__.r(__webpack_exports__);
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/login',
-          func: this.loginUser
+          url: this.backendUrl +'/user/login',
+          func: 'create_user'
         },
         method: 'post',
         text: 'Войти',
-        inputs: [
-          {
-            id: 1,
-            name: 'email',
-            type: 'email',
-            title: 'E-mail',
-            required: true
-          },
-          {
-            id: 2,
-            name: 'password',
-            type: 'password',
-            title: 'Пароль',
-            required: true
-          },
-        ],
-        textareas: [],
+        type: 'login'
       };
     },
     registerFormRender: function() {
@@ -2464,97 +2449,63 @@ __webpack_require__.r(__webpack_exports__);
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/new',
+          url: this.backendUrl + '/user/new',
           func: this.createUser
         },
         method: 'post',
         text: 'Поехали!',
-        inputs: [
-          {
-            id: 1,
-            name: 'email',
-            type: 'email',
-            title: 'E-mail',
-            required: true
-          },
-          {
-            id: 2,
-            name: 'password',
-            type: 'password',
-            title: 'Пароль',
-            required: true
-          },
-          {
-            id: 3,
-            name: 'password-confirm',
-            type: 'password',
-            title: 'Подтверждение пароля',
-            required: true
-          },
-          {
-            id: 4,
-            name: 'name',
-            type: 'text',
-            title: 'Имя (необязательно)',
-            required: false
-          },
-        ],
-        textareas: [],
+        type: 'register',
       };
-    },
-    exit: function() {
-      alert(23);
     },
     noteFormRender: function () {
       this.modalTitle = 'Добавить новую заметку.';
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/',
+          url: this.backendUrl + '/note/new',
           func: this.addNote,
         },
         method: 'post',
         text: 'Добавить',
-        inputs: [
-          {
-            id: 1,
-            name: 'title',
-            type: 'text',
-            title: 'Название заметки',
-            required: false,
-          },
-          {
-            id: 2,
-            name: 'subtitle',
-            type: 'text',
-            title: 'Пояснение к заметке',
-            required: false,
-          },
-        ],
-        textareas: [
-          {
-            id: 3,
-            name: 'text',
-            title: 'Текст заметки',
-            required: true
-          }
-        ]
+        type: 'card'
       };
     },
-    addNote: function (event) {
-      event.preventDefault();
-      let form = event.target;
+    exit: function() {
+      alert(23);
     },
     loginUser: function (event) {
       event.preventDefault();
       let form = event.target;
     },
-    createUser: function (event) {
+    create_user: function (event, data) {
+
+      console.log(event);
+      console.log(data);
+
+      /*
+
+
+      axios.post(form.action, {
+        email: data.get('email'),
+        password: data.get('password'),
+        name: data.get('name')
+      },{
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(function (response) {
+        console.log(response);
+        if (response.data.code == "200") {
+          form.reset();
+        }
+        document.querySelector('.error-container').innerText = response.data.answer;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });*/
+    },
+    addNote: function (event) {
       event.preventDefault();
       let form = event.target;
-      let data = new FormData(form);
-      
-      console.log(data.getAll());
     },
   },
   components: {
@@ -2769,134 +2720,9 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Form.vue?vue&type=script&lang=js&":
-/*!*****************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Form.vue?vue&type=script&lang=js& ***!
-  \*****************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Input_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Input.vue */ "./src/components/Form/Input.vue");
-/* harmony import */ var _Textarea_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Textarea.vue */ "./src/components/Form/Textarea.vue");
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-
-
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    params: {
-      type: Object,
-      default: function () {
-        return {
-          action: {
-            url: '#',
-            func: function () {},
-          },
-          method: 'post',
-          text: 'Отправить',
-          inputs: [],
-          textareas: []
-        };
-      },
-    },
-  },
-  computed: {
-    inputsExists: function () {
-      return this.params.inputs.length > 0;
-    },
-    textareasExists: function () {
-      return this.params.textareas.length > 0;
-    },
-  },
-  components: {
-    'input-component': _Input_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'textarea-component': _Textarea_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-  }
-});
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Input.vue?vue&type=script&lang=js&":
-/*!******************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Input.vue?vue&type=script&lang=js& ***!
-  \******************************************************************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-
-/* harmony default export */ __webpack_exports__["default"] = ({
-  props: {
-    params: {
-      type: Object,
-      default: function () {
-        return {
-          id: 0,
-          name: 'default',
-          type: 'text',
-          title: 'Заголовок',
-          required: 'false'
-        };
-      }
-    }
-  }
-});
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Textarea.vue?vue&type=script&lang=js&":
+/***/ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Register.vue?vue&type=script&lang=js&":
 /*!*********************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Textarea.vue?vue&type=script&lang=js& ***!
+  !*** ./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Register.vue?vue&type=script&lang=js& ***!
   \*********************************************************************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -2919,6 +2745,23 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -2926,13 +2769,62 @@ __webpack_require__.r(__webpack_exports__);
       type: Object,
       default: function () {
         return {
-          id: 0,
-          name: 'default',
-          title: 'Заголовок',
-          required: false,
+          action: {
+            url: '#',
+            func: function () {},
+          },
+          method: 'post',
+          text: 'Отправить',
         };
+      },
+    },
+  },
+  data() {
+    return {
+      email: '',
+      password: '',
+      confirm: '',
+      name: '',
+      error: {
+        confirm: '',
+        password: '',
       }
-    }
+    };
+  },
+  watch: {
+    confirm: function (value) {
+      if (this.password != value) {
+        this.error.confirm = ' Пароли не совпадают!';
+        document.getElementById('submit').setAttribute('disabled', 'disabled');
+      } else {
+        document.getElementById('submit').removeAttribute('disabled');
+        this.error.confirm = '';
+        this.error.password = '';
+      }
+    },
+    password: function (value) {
+      if (this.confirm != value) {
+        this.error.password = ' Пароли не совпадают!';
+        document.getElementById('submit').setAttribute('disabled', 'disabled');
+      } else {
+        document.getElementById('submit').removeAttribute('disabled');
+        this.error.confirm = '';
+        this.error.password = '';
+      }
+      if (value.length < 8) {
+        this.error.password = ' Пароль должен быть длиннее 8 символов!';
+      } else {
+        this.error.password = '';
+      }
+    },
+  },
+  methods: {
+    formSubmit: function (event) {
+      event.preventDefault();
+      let form = event.target;
+      let data = new FormData(form);
+      this.$emit(this.params.action.func, event, data);
+    },
   }
 });
 
@@ -2948,7 +2840,9 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Form_Form_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Form/Form.vue */ "./src/components/Form/Form.vue");
+/* harmony import */ var _Form_Register_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Form/Register.vue */ "./src/components/Form/Register.vue");
+//
+//
 //
 //
 //
@@ -2983,6 +2877,7 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     title: String,
     form: Object,
+    type: String,
     show: {
       type: Boolean,
       default: function() {
@@ -2991,7 +2886,7 @@ __webpack_require__.r(__webpack_exports__);
     },
   },
   components: {
-    'form-component': _Form_Form_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    'form-register': _Form_Register_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
   },
   methods: {
     closeModal: function () {
@@ -3212,10 +3107,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html&":
-/*!*************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html& ***!
-  \*************************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html&":
+/*!*****************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html& ***!
+  \*****************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -3231,107 +3126,127 @@ var render = function() {
     "form",
     {
       attrs: { action: _vm.params.action.url, method: _vm.params.method },
-      on: { submit: _vm.params.action.func }
+      on: { submit: _vm.formSubmit }
     },
     [
-      _vm.inputsExists
-        ? _vm._l(_vm.params.inputs, function(input) {
-            return _c("input-component", {
-              key: input.id,
-              attrs: { params: input }
-            })
-          })
-        : _vm._e(),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "name" } }, [
+          _vm._v("Имя(необязательно):")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.name,
+              expression: "name"
+            }
+          ],
+          attrs: { id: "name", type: "text" },
+          domProps: { value: _vm.name },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.name = $event.target.value
+            }
+          }
+        })
+      ]),
       _vm._v(" "),
-      _vm.textareasExists
-        ? _vm._l(_vm.params.textareas, function(textarea) {
-            return _c("textarea-component", {
-              key: textarea.id,
-              attrs: { params: textarea }
-            })
-          })
-        : _vm._e(),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "email" } }, [_vm._v("E-mail:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.email,
+              expression: "email"
+            }
+          ],
+          attrs: { id: "email", type: "email", required: "" },
+          domProps: { value: _vm.email },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.email = $event.target.value
+            }
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "password" } }, [_vm._v("Пароль:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.password,
+              expression: "password"
+            }
+          ],
+          attrs: { id: "password", type: "password", required: "" },
+          domProps: { value: _vm.password },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.password = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("span", {
+          staticClass: "error",
+          domProps: { textContent: _vm._s(_vm.error.password) }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "confirm" } }, [_vm._v("Повтор пароля:")]),
+        _vm._v(" "),
+        _c("input", {
+          directives: [
+            {
+              name: "model",
+              rawName: "v-model",
+              value: _vm.confirm,
+              expression: "confirm"
+            }
+          ],
+          attrs: { id: "confirm", type: "password", required: "" },
+          domProps: { value: _vm.confirm },
+          on: {
+            input: function($event) {
+              if ($event.target.composing) {
+                return
+              }
+              _vm.confirm = $event.target.value
+            }
+          }
+        }),
+        _vm._v(" "),
+        _c("span", {
+          staticClass: "error",
+          domProps: { textContent: _vm._s(_vm.error.confirm) }
+        })
+      ]),
       _vm._v(" "),
       _c("input", {
-        attrs: { type: "submit", name: "submit" },
+        attrs: { id: "submit", type: "submit", name: "submit" },
         domProps: { value: _vm.params.text }
       })
-    ],
-    2
+    ]
   )
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html&":
-/*!**************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html& ***!
-  \**************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-group" }, [
-    _c("label", { attrs: { for: _vm.params.id + "-" + _vm.params.name } }, [
-      _vm._v("\n  " + _vm._s(_vm.params.title) + "\n  ")
-    ]),
-    _vm._v(" "),
-    _c("input", {
-      attrs: {
-        id: _vm.params.id + "-" + _vm.params.name,
-        name: _vm.params.name,
-        type: _vm.params.type,
-        required: _vm.params.required
-      }
-    })
-  ])
-}
-var staticRenderFns = []
-render._withStripped = true
-
-
-
-/***/ }),
-
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html&":
-/*!*****************************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./src/components/Form/Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html& ***!
-  \*****************************************************************************************************************************************************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
-var render = function() {
-  var _vm = this
-  var _h = _vm.$createElement
-  var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "form-group" }, [
-    _c("label", { attrs: { for: _vm.params.id + "-" + _vm.params.name } }, [
-      _vm._v("\n  " + _vm._s(_vm.params.title) + "\n  ")
-    ]),
-    _vm._v(" "),
-    _c("textarea", {
-      attrs: {
-        id: _vm.params.id + "-" + _vm.params.name,
-        name: _vm.params.name,
-        required: _vm.params.required
-      }
-    })
-  ])
 }
 var staticRenderFns = []
 render._withStripped = true
@@ -3371,8 +3286,8 @@ var render = function() {
                   _c(
                     "div",
                     { staticClass: "modal-body" },
-                    [_c("form-component", { attrs: { params: _vm.form } })],
-                    1
+                    [[_c("form-register", { attrs: { params: _vm.form } })]],
+                    2
                   )
                 ])
               ]),
@@ -15834,155 +15749,17 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./src/components/Form/Form.vue":
-/*!**************************************!*\
-  !*** ./src/components/Form/Form.vue ***!
-  \**************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Form_vue_vue_type_template_id_478c5062_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html& */ "./src/components/Form/Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html&");
-/* harmony import */ var _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Form.vue?vue&type=script&lang=js& */ "./src/components/Form/Form.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Form_vue_vue_type_template_id_478c5062_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Form_vue_vue_type_template_id_478c5062_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "478c5062",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "src/components/Form/Form.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./src/components/Form/Form.vue?vue&type=script&lang=js&":
-/*!***************************************************************!*\
-  !*** ./src/components/Form/Form.vue?vue&type=script&lang=js& ***!
-  \***************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=script&lang=js& */ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Form.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./src/components/Form/Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html&":
-/*!*******************************************************************************************!*\
-  !*** ./src/components/Form/Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html& ***!
-  \*******************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_478c5062_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Form.vue?vue&type=template&id=478c5062&scoped=true&lang=html&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_478c5062_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Form_vue_vue_type_template_id_478c5062_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./src/components/Form/Input.vue":
-/*!***************************************!*\
-  !*** ./src/components/Form/Input.vue ***!
-  \***************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Input_vue_vue_type_template_id_b0fd6d62_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html& */ "./src/components/Form/Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html&");
-/* harmony import */ var _Input_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Input.vue?vue&type=script&lang=js& */ "./src/components/Form/Input.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
-
-
-
-
-
-/* normalize component */
-
-var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Input_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Input_vue_vue_type_template_id_b0fd6d62_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Input_vue_vue_type_template_id_b0fd6d62_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
-  false,
-  null,
-  "b0fd6d62",
-  null
-  
-)
-
-/* hot reload */
-if (false) { var api; }
-component.options.__file = "src/components/Form/Input.vue"
-/* harmony default export */ __webpack_exports__["default"] = (component.exports);
-
-/***/ }),
-
-/***/ "./src/components/Form/Input.vue?vue&type=script&lang=js&":
-/*!****************************************************************!*\
-  !*** ./src/components/Form/Input.vue?vue&type=script&lang=js& ***!
-  \****************************************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_index_js_vue_loader_options_Input_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib??vue-loader-options!./Input.vue?vue&type=script&lang=js& */ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Input.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_loader_lib_index_js_vue_loader_options_Input_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
-
-/***/ }),
-
-/***/ "./src/components/Form/Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html&":
-/*!********************************************************************************************!*\
-  !*** ./src/components/Form/Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html& ***!
-  \********************************************************************************************/
-/*! exports provided: render, staticRenderFns */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Input_vue_vue_type_template_id_b0fd6d62_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Input.vue?vue&type=template&id=b0fd6d62&scoped=true&lang=html&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Input_vue_vue_type_template_id_b0fd6d62_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"]; });
-
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Input_vue_vue_type_template_id_b0fd6d62_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
-
-
-
-/***/ }),
-
-/***/ "./src/components/Form/Textarea.vue":
+/***/ "./src/components/Form/Register.vue":
 /*!******************************************!*\
-  !*** ./src/components/Form/Textarea.vue ***!
+  !*** ./src/components/Form/Register.vue ***!
   \******************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _Textarea_vue_vue_type_template_id_1e0ee5c5_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html& */ "./src/components/Form/Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html&");
-/* harmony import */ var _Textarea_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Textarea.vue?vue&type=script&lang=js& */ "./src/components/Form/Textarea.vue?vue&type=script&lang=js&");
+/* harmony import */ var _Register_vue_vue_type_template_id_2f6b80ae_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html& */ "./src/components/Form/Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html&");
+/* harmony import */ var _Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Register.vue?vue&type=script&lang=js& */ "./src/components/Form/Register.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
@@ -15992,50 +15769,50 @@ __webpack_require__.r(__webpack_exports__);
 /* normalize component */
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
-  _Textarea_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _Textarea_vue_vue_type_template_id_1e0ee5c5_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _Textarea_vue_vue_type_template_id_1e0ee5c5_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _Register_vue_vue_type_template_id_2f6b80ae_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _Register_vue_vue_type_template_id_2f6b80ae_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  "1e0ee5c5",
+  "2f6b80ae",
   null
   
 )
 
 /* hot reload */
 if (false) { var api; }
-component.options.__file = "src/components/Form/Textarea.vue"
+component.options.__file = "src/components/Form/Register.vue"
 /* harmony default export */ __webpack_exports__["default"] = (component.exports);
 
 /***/ }),
 
-/***/ "./src/components/Form/Textarea.vue?vue&type=script&lang=js&":
+/***/ "./src/components/Form/Register.vue?vue&type=script&lang=js&":
 /*!*******************************************************************!*\
-  !*** ./src/components/Form/Textarea.vue?vue&type=script&lang=js& ***!
+  !*** ./src/components/Form/Register.vue?vue&type=script&lang=js& ***!
   \*******************************************************************/
 /*! exports provided: default */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_index_js_vue_loader_options_Textarea_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib??vue-loader-options!./Textarea.vue?vue&type=script&lang=js& */ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Textarea.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_loader_lib_index_js_vue_loader_options_Textarea_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+/* harmony import */ var _node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib??vue-loader-options!./Register.vue?vue&type=script&lang=js& */ "./node_modules/vue-loader/lib/index.js?!./src/components/Form/Register.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
 
 /***/ }),
 
-/***/ "./src/components/Form/Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html&":
+/***/ "./src/components/Form/Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html&":
 /*!***********************************************************************************************!*\
-  !*** ./src/components/Form/Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html& ***!
+  !*** ./src/components/Form/Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html& ***!
   \***********************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Textarea_vue_vue_type_template_id_1e0ee5c5_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Textarea.vue?vue&type=template&id=1e0ee5c5&scoped=true&lang=html&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Textarea_vue_vue_type_template_id_1e0ee5c5_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_2f6b80ae_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./src/components/Form/Register.vue?vue&type=template&id=2f6b80ae&scoped=true&lang=html&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_2f6b80ae_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Textarea_vue_vue_type_template_id_1e0ee5c5_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_Register_vue_vue_type_template_id_2f6b80ae_scoped_true_lang_html___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

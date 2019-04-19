@@ -31,7 +31,8 @@ export default {
       modalTitle: '',
       modalForm: {},
       modalShow: false,
-    }
+      backendUrl: 'http://organizer-backend',
+    };
   },
   methods: {
     enterFormRender: function() {
@@ -39,28 +40,12 @@ export default {
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/login',
-          func: this.loginUser
+          url: this.backendUrl +'/user/login',
+          func: 'create_user'
         },
         method: 'post',
         text: 'Войти',
-        inputs: [
-          {
-            id: 1,
-            name: 'email',
-            type: 'email',
-            title: 'E-mail',
-            required: true
-          },
-          {
-            id: 2,
-            name: 'password',
-            type: 'password',
-            title: 'Пароль',
-            required: true
-          },
-        ],
-        textareas: [],
+        type: 'login'
       };
     },
     registerFormRender: function() {
@@ -68,97 +53,63 @@ export default {
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/new',
+          url: this.backendUrl + '/user/new',
           func: this.createUser
         },
         method: 'post',
         text: 'Поехали!',
-        inputs: [
-          {
-            id: 1,
-            name: 'email',
-            type: 'email',
-            title: 'E-mail',
-            required: true
-          },
-          {
-            id: 2,
-            name: 'password',
-            type: 'password',
-            title: 'Пароль',
-            required: true
-          },
-          {
-            id: 3,
-            name: 'password-confirm',
-            type: 'password',
-            title: 'Подтверждение пароля',
-            required: true
-          },
-          {
-            id: 4,
-            name: 'name',
-            type: 'text',
-            title: 'Имя (необязательно)',
-            required: false
-          },
-        ],
-        textareas: [],
+        type: 'register',
       };
-    },
-    exit: function() {
-      alert(23);
     },
     noteFormRender: function () {
       this.modalTitle = 'Добавить новую заметку.';
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/',
+          url: this.backendUrl + '/note/new',
           func: this.addNote,
         },
         method: 'post',
         text: 'Добавить',
-        inputs: [
-          {
-            id: 1,
-            name: 'title',
-            type: 'text',
-            title: 'Название заметки',
-            required: false,
-          },
-          {
-            id: 2,
-            name: 'subtitle',
-            type: 'text',
-            title: 'Пояснение к заметке',
-            required: false,
-          },
-        ],
-        textareas: [
-          {
-            id: 3,
-            name: 'text',
-            title: 'Текст заметки',
-            required: true
-          }
-        ]
+        type: 'card'
       };
     },
-    addNote: function (event) {
-      event.preventDefault();
-      let form = event.target;
+    exit: function() {
+      alert(23);
     },
     loginUser: function (event) {
       event.preventDefault();
       let form = event.target;
     },
-    createUser: function (event) {
+    create_user: function (event, data) {
+
+      console.log(event);
+      console.log(data);
+
+      /*
+
+
+      axios.post(form.action, {
+        email: data.get('email'),
+        password: data.get('password'),
+        name: data.get('name')
+      },{
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(function (response) {
+        console.log(response);
+        if (response.data.code == "200") {
+          form.reset();
+        }
+        document.querySelector('.error-container').innerText = response.data.answer;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });*/
+    },
+    addNote: function (event) {
       event.preventDefault();
       let form = event.target;
-      let data = new FormData(form);
-      
-      console.log(data.getAll());
     },
   },
   components: {
