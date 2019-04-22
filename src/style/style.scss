@@ -258,11 +258,6 @@ input, textarea {
     @media screen and (max-width: map-get($grid-breakpoints, 'sm')) {
       font-size: 1.75rem;
       width: 100%;
-
-      &:hover {
-        background-color: map-get($colors, 'heading');
-      }
-
     }
 
     &:hover {
@@ -270,12 +265,31 @@ input, textarea {
     }
 
     &:disabled {
+      cursor: default;
       opacity: .75;
+
+      &:hover {
+        background-color: map-get($colors, 'heading');
+      }
     }
+
   }
 }
 
 .error {
   color: red;
   font-size: .875rem;
+}
+
+
+.form-error-list {
+  width: 100%;
+
+  .error-item {
+    color: red;
+    display: block;
+    font-size: .875rem;
+    margin: .25rem 0;
+    width: 100%;
+  }
 }

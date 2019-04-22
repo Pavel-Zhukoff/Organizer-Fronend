@@ -23,9 +23,9 @@ export default {
   data() {
     return {
       actions: {
-        enter: this.enterFormRender,
-        register: this.registerFormRender,
-        exit: this.exit,
+        login: this.enterFormRender,
+        signup: this.registerFormRender,
+        logout: this.exit,
         newNote: this.noteFormRender,
       },
       modalTitle: '',
@@ -41,7 +41,6 @@ export default {
       this.modalForm = {
         action: {
           url: this.backendUrl +'/user/login',
-          func: 'create_user'
         },
         method: 'post',
         text: 'Войти',
@@ -54,7 +53,6 @@ export default {
       this.modalForm = {
         action: {
           url: this.backendUrl + '/user/new',
-          func: this.createUser
         },
         method: 'post',
         text: 'Поехали!',
@@ -67,7 +65,6 @@ export default {
       this.modalForm = {
         action: {
           url: this.backendUrl + '/note/new',
-          func: this.addNote,
         },
         method: 'post',
         text: 'Добавить',
@@ -75,37 +72,29 @@ export default {
       };
     },
     exit: function() {
-      alert(23);
+      var user = this.$cookies.get('user').rows[0];
+      console.log(user);
+      axios.post(this.backendUrl + '/user/logout', user, {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(response => {
+        console.log(response);
+        if (response.data.code == "200") {
+          alert( response.data.answer);
+          if (this.$cookies.isKey('user')) {
+            this.$cookies.remove('user');
+          }
+        } else {
+          alert( response.data.answer);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
     },
     loginUser: function (event) {
       event.preventDefault();
       let form = event.target;
-    },
-    create_user: function (event, data) {
-
-      console.log(event);
-      console.log(data);
-
-      /*
-
-
-      axios.post(form.action, {
-        email: data.get('email'),
-        password: data.get('password'),
-        name: data.get('name')
-      },{
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-      })
-      .then(function (response) {
-        console.log(response);
-        if (response.data.code == "200") {
-          form.reset();
-        }
-        document.querySelector('.error-container').innerText = response.data.answer;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });*/
     },
     addNote: function (event) {
       event.preventDefault();
@@ -116,6 +105,25 @@ export default {
     'header-component': HeaderComponent,
     'modal-component': ModalComponent,
     'desk-component': DeskComponent
-  }
+  },
+  created: function () {
+    if (this.$cookies.isKey('user')) {
+      var user = this.$cookies.get('user').rows[0];
+      axios.post(this.backendUrl + '/user', user, {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(response => {
+        console.log(response);
+        if (response.data.code == "200") {
+          this.$cookies.set('user', response.data.answer);
+        } else {
+          this.$cookies.remove('user');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+  },
 }
 </script>

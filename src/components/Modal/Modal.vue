@@ -9,11 +9,9 @@
                 <h2 class="title">{{ title }}</h2>
               </div>
               <div class="modal-body">
-              <template>
                 <form-register
                   :params="form"
                 ></form-register>
-              </template>
               </div>
             </div>
           </div>

@@ -2419,9 +2419,9 @@ __webpack_require__.r(__webpack_exports__);
   data() {
     return {
       actions: {
-        enter: this.enterFormRender,
-        register: this.registerFormRender,
-        exit: this.exit,
+        login: this.enterFormRender,
+        signup: this.registerFormRender,
+        logout: this.exit,
         newNote: this.noteFormRender,
       },
       modalTitle: '',
@@ -2437,7 +2437,6 @@ __webpack_require__.r(__webpack_exports__);
       this.modalForm = {
         action: {
           url: this.backendUrl +'/user/login',
-          func: 'create_user'
         },
         method: 'post',
         text: 'Войти',
@@ -2450,7 +2449,6 @@ __webpack_require__.r(__webpack_exports__);
       this.modalForm = {
         action: {
           url: this.backendUrl + '/user/new',
-          func: this.createUser
         },
         method: 'post',
         text: 'Поехали!',
@@ -2463,7 +2461,6 @@ __webpack_require__.r(__webpack_exports__);
       this.modalForm = {
         action: {
           url: this.backendUrl + '/note/new',
-          func: this.addNote,
         },
         method: 'post',
         text: 'Добавить',
@@ -2471,37 +2468,29 @@ __webpack_require__.r(__webpack_exports__);
       };
     },
     exit: function() {
-      alert(23);
+      var user = this.$cookies.get('user').rows[0];
+      console.log(user);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.backendUrl + '/user/logout', user, {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(response => {
+        console.log(response);
+        if (response.data.code == "200") {
+          alert( response.data.answer);
+          if (this.$cookies.isKey('user')) {
+            this.$cookies.remove('user');
+          }
+        } else {
+          alert( response.data.answer);
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
     },
     loginUser: function (event) {
       event.preventDefault();
       let form = event.target;
-    },
-    create_user: function (event, data) {
-
-      console.log(event);
-      console.log(data);
-
-      /*
-
-
-      axios.post(form.action, {
-        email: data.get('email'),
-        password: data.get('password'),
-        name: data.get('name')
-      },{
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-      })
-      .then(function (response) {
-        console.log(response);
-        if (response.data.code == "200") {
-          form.reset();
-        }
-        document.querySelector('.error-container').innerText = response.data.answer;
-      })
-      .catch(function (error) {
-        console.log(error);
-      });*/
     },
     addNote: function (event) {
       event.preventDefault();
@@ -2512,7 +2501,26 @@ __webpack_require__.r(__webpack_exports__);
     'header-component': _Common_Header_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
     'modal-component': _Modal_Modal_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
     'desk-component': _Desk_Desk_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
-  }
+  },
+  created: function () {
+    if (this.$cookies.isKey('user')) {
+      var user = this.$cookies.get('user').rows[0];
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(this.backendUrl + '/user', user, {
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(response => {
+        console.log(response);
+        if (response.data.code == "200") {
+          this.$cookies.set('user', response.data.answer);
+        } else {
+          this.$cookies.remove('user');
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
+    }
+  },
 });
 
 
@@ -2551,21 +2559,23 @@ __webpack_require__.r(__webpack_exports__);
   },
   data () {
     return {
-      links: [
-        {id: 1, action: this.actions.newNote, text: 'Добавить'},
-        {id: 2, action: this.actions.enter, text: 'Войти'},
-        {id: 3, action: this.actions.register, text: 'Регистрация'},
-			]
+      links: new Map([
+        ['add', {action: this.actions.newNote, text: 'Добавить'}],
+        ['enter', {action: this.actions.login, text: 'Войти'}],
+        ['register', {action: this.actions.signup, text: 'Регистрация'}],
+			])
     }
   },
-  created: function () {
-    //this.links.push({id: 2, url: 'exit', text: 'Выйти'});
-  },
   computed: {
-    user: function () {
-      return {
-        name: 'Гостя'
-      };
+    userName: function () {
+      var userName = 'Гостя'
+      if (this.$cookies.isKey('user')) {
+        userName = this.$cookies.get('user').rows[0].name;
+        this.links.delete('enter');
+        this.links.delete('register');
+        this.links.set('exit', {action: this.actions.logout, text: 'Выйти'})
+      }
+      return userName;
     }
   },
   components: {
@@ -2596,12 +2606,11 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     links: {
-      type: Array,
+      type: Map,
       required: true
     }
   }
@@ -2729,6 +2738,10 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+//
+//
 //
 //
 //
@@ -2763,6 +2776,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 
+
+
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
     params: {
@@ -2771,7 +2786,6 @@ __webpack_require__.r(__webpack_exports__);
         return {
           action: {
             url: '#',
-            func: function () {},
           },
           method: 'post',
           text: 'Отправить',
@@ -2788,43 +2802,81 @@ __webpack_require__.r(__webpack_exports__);
       error: {
         confirm: '',
         password: '',
-      }
+      },
+      errors: new Map([["408", "Заполните email!"], ["409", "Заполните пароль!"]]),
+      _response: {},
     };
   },
+  computed: {
+
+  },
   watch: {
-    confirm: function (value) {
-      if (this.password != value) {
-        this.error.confirm = ' Пароли не совпадают!';
-        document.getElementById('submit').setAttribute('disabled', 'disabled');
-      } else {
-        document.getElementById('submit').removeAttribute('disabled');
-        this.error.confirm = '';
-        this.error.password = '';
-      }
-    },
-    password: function (value) {
-      if (this.confirm != value) {
-        this.error.password = ' Пароли не совпадают!';
-        document.getElementById('submit').setAttribute('disabled', 'disabled');
-      } else {
-        document.getElementById('submit').removeAttribute('disabled');
-        this.error.confirm = '';
-        this.error.password = '';
-      }
-      if (value.length < 8) {
-        this.error.password = ' Пароль должен быть длиннее 8 символов!';
-      } else {
-        this.error.password = '';
-      }
-    },
+    confirm: 'checkPasswordsEquality',
+    password: 'checkPasswordsEquality',
+    email: 'checkEmail',
   },
   methods: {
+    disabledSubmit: function () {
+      console.log(this.errors.size);
+      return this.errors.size === 0?false:true;
+    },
     formSubmit: function (event) {
       event.preventDefault();
-      let form = event.target;
+      var form = event.target;
       let data = new FormData(form);
-      this.$emit(this.params.action.func, event, data);
+      axios__WEBPACK_IMPORTED_MODULE_0___default.a.post(form.action, {
+        email: data.get('email'),
+        password: data.get('password'),
+        name: data.get('name')
+      },{
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(response => {
+        console.log(response);
+        if (response.data.code == "200") {
+          form.reset();
+          this.errors.clear();
+          this.$emit('closeModal');
+          alert(response.data.answer);
+          this.$cookies.set('user', response.data.data)
+        } else {
+          if (!this.errors.has(response.data.code)) {
+            this.errors.set(response.data.code, response.data.answer);
+          }
+        }
+      })
+      .catch(error => {
+        console.log(error);
+      });
     },
+    checkEmail: function () {
+      const {email} = this;
+      if (email.length < 1) {
+        this.errors.set("408", "Заполните email!");
+      } else {
+        this.errors.delete("408")
+      }
+    },
+    checkPasswordsEquality: function () {
+      const { password, confirm } = this;
+      if (!password.match("((?:[a-z][a-z]*[0-9]+[a-z0-9]*))") && password.length < 8) {
+        this.errors.set("407", "Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!");
+      } else {
+        this.errors.delete("407")
+      }
+
+      if (password !== confirm) {
+        this.errors.set("406", "Пароли не совпадают!");
+      } else {
+        this.errors.delete("406")
+      }
+
+      if (password.length < 1) {
+        this.errors.set("409", "Заполните пароль!");
+      } else {
+        this.errors.delete("409")
+      }
+    }
   }
 });
 
@@ -2841,8 +2893,6 @@ __webpack_require__.r(__webpack_exports__);
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _Form_Register_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../Form/Register.vue */ "./src/components/Form/Register.vue");
-//
-//
 //
 //
 //
@@ -2962,7 +3012,7 @@ var render = function() {
           _c("h2", { staticClass: "title" }, [
             _vm._v("Журнал заметок,\n        "),
             _c("span", { staticClass: "user-name" }, [
-              _vm._v("\n          " + _vm._s(_vm.user.name) + "\n        ")
+              _vm._v("\n          " + _vm._s(_vm.userName) + "\n        ")
             ])
           ])
         ]),
@@ -3001,8 +3051,8 @@ var render = function() {
     _vm._l(_vm.links, function(link) {
       return _c(
         "span",
-        { key: link.id, staticClass: "nav-item", on: { click: link.action } },
-        [_vm._v("\n   " + _vm._s(link.text) + "\n  ")]
+        { staticClass: "nav-item", on: { click: link[1].action } },
+        [_vm._v("\n   " + _vm._s(link[1].text) + "\n  ")]
       )
     }),
     0
@@ -3129,6 +3179,17 @@ var render = function() {
       on: { submit: _vm.formSubmit }
     },
     [
+      _c(
+        "div",
+        { staticClass: "form-error-list" },
+        _vm._l(_vm.errors, function(error) {
+          return _c("span", { staticClass: "error-item" }, [
+            _vm._v(_vm._s(error[1]))
+          ])
+        }),
+        0
+      ),
+      _vm._v(" "),
       _c("div", { staticClass: "form-group" }, [
         _c("label", { attrs: { for: "name" } }, [
           _vm._v("Имя(необязательно):")
@@ -3143,7 +3204,7 @@ var render = function() {
               expression: "name"
             }
           ],
-          attrs: { id: "name", type: "text" },
+          attrs: { id: "name", type: "text", name: "name" },
           domProps: { value: _vm.name },
           on: {
             input: function($event) {
@@ -3168,7 +3229,7 @@ var render = function() {
               expression: "email"
             }
           ],
-          attrs: { id: "email", type: "email", required: "" },
+          attrs: { id: "email", type: "email", name: "email", required: "" },
           domProps: { value: _vm.email },
           on: {
             input: function($event) {
@@ -3193,7 +3254,12 @@ var render = function() {
               expression: "password"
             }
           ],
-          attrs: { id: "password", type: "password", required: "" },
+          attrs: {
+            id: "password",
+            type: "password",
+            name: "password",
+            required: ""
+          },
           domProps: { value: _vm.password },
           on: {
             input: function($event) {
@@ -3203,11 +3269,6 @@ var render = function() {
               _vm.password = $event.target.value
             }
           }
-        }),
-        _vm._v(" "),
-        _c("span", {
-          staticClass: "error",
-          domProps: { textContent: _vm._s(_vm.error.password) }
         })
       ]),
       _vm._v(" "),
@@ -3223,7 +3284,12 @@ var render = function() {
               expression: "confirm"
             }
           ],
-          attrs: { id: "confirm", type: "password", required: "" },
+          attrs: {
+            id: "confirm",
+            type: "password",
+            name: "confirm",
+            required: ""
+          },
           domProps: { value: _vm.confirm },
           on: {
             input: function($event) {
@@ -3233,16 +3299,16 @@ var render = function() {
               _vm.confirm = $event.target.value
             }
           }
-        }),
-        _vm._v(" "),
-        _c("span", {
-          staticClass: "error",
-          domProps: { textContent: _vm._s(_vm.error.confirm) }
         })
       ]),
       _vm._v(" "),
       _c("input", {
-        attrs: { id: "submit", type: "submit", name: "submit" },
+        attrs: {
+          id: "submit",
+          type: "submit",
+          name: "submit",
+          disabled: _vm.disabledSubmit()
+        },
         domProps: { value: _vm.params.text }
       })
     ]
@@ -3286,8 +3352,8 @@ var render = function() {
                   _c(
                     "div",
                     { staticClass: "modal-body" },
-                    [[_c("form-register", { attrs: { params: _vm.form } })]],
-                    2
+                    [_c("form-register", { attrs: { params: _vm.form } })],
+                    1
                   )
                 ])
               ]),
@@ -15900,7 +15966,10 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_dist_vue_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_dist_vue_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue-cookies */ "./node_modules/vue-cookies/vue-cookies.js");
 /* harmony import */ var vue_cookies__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue_cookies__WEBPACK_IMPORTED_MODULE_1__);
-/* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/App.vue */ "./src/components/App.vue");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
+/* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/App.vue */ "./src/components/App.vue");
+
 
 
  // TODO: Сделать фронтенд для пользователя
@@ -15912,10 +15981,9 @@ new vue_dist_vue_js__WEBPACK_IMPORTED_MODULE_0___default.a({
     document.title = 'Мастер заметок';
   },
   components: {
-    app: _components_App_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    app: _components_App_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
   }
 });
-console.log(vue_cookies__WEBPACK_IMPORTED_MODULE_1___default.a);
 
 /***/ })
 
