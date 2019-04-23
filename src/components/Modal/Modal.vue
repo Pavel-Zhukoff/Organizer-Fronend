@@ -19,6 +19,11 @@
                     :params="form"
                   ></form-login>
                 </template>
+                <template v-else-if="form.type == `card`">
+                  <form-card
+                    :params="form"
+                  ></form-card>
+                </template>
               </div>
             </div>
           </div>
@@ -35,6 +40,7 @@
 <script>
 import FormRegister from '../Form/Register.vue';
 import FormLogin from '../Form/Enter.vue';
+import FormCard from '../Form/Card.vue';
 
 export default {
   props: {
@@ -51,6 +57,7 @@ export default {
   components: {
     'form-register': FormRegister,
     'form-login': FormLogin,
+    'form-card': FormCard,
   },
   methods: {
     closeModal: function () {

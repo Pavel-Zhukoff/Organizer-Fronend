@@ -9,19 +9,19 @@
     </div>
     <div class="form-group">
       <label for="name">Имя(необязательно):</label>
-      <input id="name" type="text" v-model="name" name="name">
+      <input id="name" type="text" v-model="name">
     </div>
     <div class="form-group">
       <label for="email">E-mail:</label>
-      <input id="email" type="email" v-model="email" name="email" required>
+      <input id="email" type="email" v-model="email" required>
     </div>
     <div class="form-group">
       <label for="password">Пароль:</label>
-      <input id="password" type="password" v-model="password" name="password" required>
+      <input id="password" type="password" v-model="password" required>
     </div>
     <div class="form-group">
       <label for="confirm">Повтор пароля:</label>
-      <input id="confirm" type="password" v-model="confirm" name="confirm" required>
+      <input id="confirm" type="password" v-model="confirm" required>
     </div>
     <input
     id="submit"
@@ -76,12 +76,11 @@ export default {
     formSubmit: function (event) {
       event.preventDefault();
       var form = event.target;
-      let data = new FormData(form);
       var vm = this;
       axios.post(form.action, {
-        email: data.get('email'),
-        password: data.get('password'),
-        name: data.get('name')
+        email: vm.email,
+        password: vm.password,
+        name: vm.name
       },{
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       })
@@ -89,7 +88,7 @@ export default {
         if (response.data.code == "200") {
           form.reset();
           vm.errors.clear();
-          vm.$emit('closeModal');
+          vm.$parent.closeModal();
           localStorage.setItem('user', JSON.stringify(response.data.data));
           alert(response.data.answer);
         } else {

@@ -4,7 +4,6 @@
     <header-component ref="header" :actions="actions"></header-component>
     <desk-component></desk-component>
     <modal-component
-      ref="asdasd"
      :title="modalTitle"
      :form="modalForm"
      :show="modalShow"

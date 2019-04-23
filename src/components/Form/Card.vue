@@ -8,12 +8,18 @@
       <span v-for="error in errors" v-text.sync="error[1]" class="error-item"></span>
     </div>
     <div class="form-group">
-      <label for="email">Логин(e-mail):</label>
-      <input id="email" type="email" v-model="email" required>
+      <label for="title">Заголовок:</label>
+      <input id="title" type="text" v-model="title">
     </div>
     <div class="form-group">
-      <label for="password">Пароль:</label>
-      <input id="password" type="password" v-model="password" required>
+      <label for="subtitle">Пометка:</label>
+      <input id="subtitle" type="text" v-model="subtitle">
+    </div>
+
+    <div class="form-group">
+      <label for="password">Текст заметки:</label>
+      <textarea name="text" v-model="text"></textarea>
+      <span>{{ countLength }} / {{ maxLength }}</span>
     </div>
     <input
     id="submit"
@@ -38,28 +44,40 @@ export default {
             url: '#',
           },
           method: 'post',
-          text: 'Отправить',
+          text: 'Добавить',
         };
       },
     },
   },
   data() {
     return {
-      email: '',
-      password: '',
-      errors: new Map([["408", "Заполните email!"], ["409", "Заполните пароль!"]]),
+      title: '',
+      subtitle: '',
+      text: '',
+      errors: new Map([["410", "Заполните текст заметки!"]]),
+      maxLength: 200,
     };
   },
   computed: {
-
+    countLength: function () {
+      return this.text.length;
+    },
   },
   watch: {
-    password: 'checkPasswordsEquality',
-    email: 'checkEmail',
+    text: function (value) {
+      if (value.length < 1) {
+        this.errors.set("410", "Заполните текст заметки!");
+      } else {
+        this.errors.delete("410")
+      }
+      if (value.length > this.maxLength) {
+        this.text = value.substr(0, this.maxLength);
+      }
+    }
   },
   methods: {
     disabledSubmit: function () {
-      if (this.errors.has("408")  || this.errors.has("409")) {
+      if (this.errors.has("410")) {
         return true;
        } else {
         return false;
@@ -70,8 +88,10 @@ export default {
       var form = event.target;
       var vm = this;
       var response = axios.post(this.params.action.url, {
-        email: vm.email,
-        password: vm.password
+        title: vm.title,
+        subtitle: vm.subtitle,
+        text: vm.text,
+        user_id: JSON.parse(localStorage.getItem('user')).user_id
       },{
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       })
@@ -81,8 +101,6 @@ export default {
           vm.errors.clear();
           vm.$parent.closeModal();
           alert(response.data.answer);
-          console.log(response.data.data);
-          localStorage.setItem('user', JSON.stringify(response.data.data));
         } else {
           if (!vm.errors.has(response.data.code)) {
             vm.errors.set(response.data.code, response.data.answer);
@@ -93,22 +111,6 @@ export default {
         console.log(error);
       });
     },
-    checkEmail: function () {
-      const {email} = this;
-      if (email.length < 1) {
-        this.errors.set("408", "Заполните email!");
-      } else {
-        this.errors.delete("408")
-      }
-    },
-    checkPasswordsEquality: function () {
-      const { password } = this;
-      if (password.length < 1) {
-        this.errors.set("409", "Заполните пароль!");
-      } else {
-        this.errors.delete("409")
-      }
-    }
   }
 }
 </script>

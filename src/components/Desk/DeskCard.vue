@@ -3,7 +3,6 @@
 <div class="col-lg-4 col-md-6 col-12 mb-md-0 mb-2">
   <div class="card">
     <div class="card-button-remove"
-      :data-target="`delete-` + card.id"
       v-on:click="deleteCard"></div>
     <div class="card-title">
       <h2 class="title">{{ card.title }}</h2>
@@ -29,8 +28,7 @@ export default {
   },
   methods: {
     deleteCard: function (event) {
-      let [target, id] = event.target.dataset.target.split('-');
-      
+      // TODO: Добавить сюда удаление по клику
     }
   }
 }

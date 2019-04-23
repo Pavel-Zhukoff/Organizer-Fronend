@@ -22,11 +22,13 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 import DeskCardComponent from './DeskCard.vue' ;
 export default {
   data () {
     return {
-      cards: this.getCards()
+      cards: [],
     }
   },
   computed: {
@@ -34,11 +36,34 @@ export default {
       return this.cards.length > 0;
     }
   },
+  created: function () {
+    var vm = this;
+    axios.post(vm.$parent.backendUrl + '/note', {
+      user_id: JSON.parse(localStorage.getItem('user')).user_id
+    },{
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+    })
+    .then(function(response) {
+      vm.cards = response.data.answer;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+  },
   methods: {
     getCards: function () {
-      return [
-        {id: 1, title: 'Заголовок #1', subtitle: 'Примечание', text: 'Какой-то текст. Заметка о чем-то. Купить хлеба!'},
-        ];
+      var vm = this;
+      axios.post(vm.$parent.backendUrl + '/note', {
+        user_id: JSON.parse(localStorage.getItem('user')).user_id
+      },{
+        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      })
+      .then(function(response) {
+        vm.cards = response.data.answer;
+      })
+      .catch(error => {
+        console.log(error);
+      });
     }
   },
   components: {
