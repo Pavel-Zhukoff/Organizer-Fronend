@@ -1,12 +1,13 @@
 <template>
 
   <div>
-    <header-component :actions="actions"></header-component>
+    <header-component ref="header" :actions="actions"></header-component>
     <desk-component></desk-component>
     <modal-component
-    :title="modalTitle"
-    :form="modalForm"
-    :show="modalShow"
+      ref="asdasd"
+     :title="modalTitle"
+     :form="modalForm"
+     :show="modalShow"
     ></modal-component>
   </div>
 
@@ -56,7 +57,7 @@ export default {
         },
         method: 'post',
         text: 'Поехали!',
-        type: 'register',
+        type: 'signup',
       };
     },
     noteFormRender: function () {
@@ -72,7 +73,7 @@ export default {
       };
     },
     exit: function() {
-      var user = this.$cookies.get('user').rows[0];
+      var user = JSON.parse(localStorage.getItem('user'))[0];
       console.log(user);
       axios.post(this.backendUrl + '/user/logout', user, {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
@@ -81,8 +82,8 @@ export default {
         console.log(response);
         if (response.data.code == "200") {
           alert( response.data.answer);
-          if (this.$cookies.isKey('user')) {
-            this.$cookies.remove('user');
+          if (localStorage.getItem('user') !== undefined) {
+            localStorage.removeItem('user');
           }
         } else {
           alert( response.data.answer);
@@ -107,17 +108,17 @@ export default {
     'desk-component': DeskComponent
   },
   created: function () {
-    if (this.$cookies.isKey('user')) {
-      var user = this.$cookies.get('user').rows[0];
+    if (localStorage.getItem('user') !== null) {
+      //this.$cookies.remove('user')
+      var user = JSON.parse(localStorage.getItem('user'));
       axios.post(this.backendUrl + '/user', user, {
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       })
       .then(response => {
-        console.log(response);
         if (response.data.code == "200") {
-          this.$cookies.set('user', response.data.answer);
+          localStorage.setItem('user', JSON.stringify(response.data.answer));
         } else {
-          this.$cookies.remove('user');
+          localStorage.removeItem('user');
         }
       })
       .catch(error => {

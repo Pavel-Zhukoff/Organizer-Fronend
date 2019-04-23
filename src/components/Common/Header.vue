@@ -31,8 +31,8 @@ export default {
   computed: {
     userName: function () {
       var userName = 'Гостя'
-      if (this.$cookies.isKey('user')) {
-        userName = this.$cookies.get('user').rows[0].name;
+      if (localStorage.getItem('user') !== null) {
+        userName = JSON.parse(localStorage.getItem('user')).name;
         this.links.delete('enter');
         this.links.delete('register');
         this.links.set('exit', {action: this.actions.logout, text: 'Выйти'})

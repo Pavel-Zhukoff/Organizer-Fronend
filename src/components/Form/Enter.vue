@@ -1,27 +1,19 @@
 <template lang="html">
   <form
-  :action="params.action.url"
+  action=""
   :method="params.method"
   v-on:submit="formSubmit"
   >
     <div class="form-error-list">
-      <span v-for="error in errors" v-text="error[1]" class="error-item"></span>
+      <span v-for="error in errors" v-text.sync="error[1]" class="error-item"></span>
     </div>
     <div class="form-group">
-      <label for="name">Имя(необязательно):</label>
-      <input id="name" type="text" v-model="name" name="name">
-    </div>
-    <div class="form-group">
-      <label for="email">E-mail:</label>
+      <label for="email">Логин(e-mail):</label>
       <input id="email" type="email" v-model="email" name="email" required>
     </div>
     <div class="form-group">
       <label for="password">Пароль:</label>
       <input id="password" type="password" v-model="password" name="password" required>
-    </div>
-    <div class="form-group">
-      <label for="confirm">Повтор пароля:</label>
-      <input id="confirm" type="password" v-model="confirm" name="confirm" required>
     </div>
     <input
     id="submit"
@@ -55,19 +47,21 @@ export default {
     return {
       email: '',
       password: '',
-      confirm: '',
       name: '',
       errors: new Map([["408", "Заполните email!"], ["409", "Заполните пароль!"]]),
+      _response: '',
     };
   },
+  computed: {
+
+  },
   watch: {
-    confirm: 'checkPasswordsEquality',
     password: 'checkPasswordsEquality',
     email: 'checkEmail',
   },
   methods: {
     disabledSubmit: function () {
-      if (this.errors.has("406") || this.errors.has("407") || this.errors.has("408")  || this.errors.has("409")) {
+      if (this.errors.has("408")  || this.errors.has("409")) {
         return true;
        } else {
         return false;
@@ -78,27 +72,27 @@ export default {
       var form = event.target;
       let data = new FormData(form);
       var vm = this;
-      axios.post(form.action, {
+      var response = axios.post(this.params.action.url, {
         email: data.get('email'),
-        password: data.get('password'),
-        name: data.get('name')
+        password: data.get('password')
       },{
         headers: {'Content-Type': 'application/x-www-form-urlencoded'}
       })
-      .then(function (response) {
+      .then(function(response) {
         if (response.data.code == "200") {
           form.reset();
           vm.errors.clear();
           vm.$emit('closeModal');
-          localStorage.setItem('user', JSON.stringify(response.data.data));
           alert(response.data.answer);
+          console.log(response.data.data);
+          localStorage.setItem('user', JSON.stringify(response.data.data));
         } else {
           if (!vm.errors.has(response.data.code)) {
             vm.errors.set(response.data.code, response.data.answer);
           }
         }
       })
-      .catch(function(error) {
+      .catch(error => {
         console.log(error);
       });
     },
@@ -111,19 +105,7 @@ export default {
       }
     },
     checkPasswordsEquality: function () {
-      const { password, confirm } = this;
-      if (!password.match("((?:[a-z][a-z]*[0-9]+[a-z0-9]*))") && password.length < 8) {
-        this.errors.set("407", "Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!");
-      } else {
-        this.errors.delete("407")
-      }
-
-      if (password !== confirm) {
-        this.errors.set("406", "Пароли не совпадают!");
-      } else {
-        this.errors.delete("406")
-      }
-
+      const { password } = this;
       if (password.length < 1) {
         this.errors.set("409", "Заполните пароль!");
       } else {

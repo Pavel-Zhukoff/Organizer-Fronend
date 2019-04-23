@@ -9,9 +9,16 @@
                 <h2 class="title">{{ title }}</h2>
               </div>
               <div class="modal-body">
-                <form-register
-                  :params="form"
-                ></form-register>
+                <template v-if="form.type == `signup`">
+                  <form-register
+                    :params="form"
+                  ></form-register>
+                </template>
+                <template v-else-if="form.type == `login`">
+                  <form-login
+                    :params="form"
+                  ></form-login>
+                </template>
               </div>
             </div>
           </div>
@@ -27,6 +34,7 @@
 
 <script>
 import FormRegister from '../Form/Register.vue';
+import FormLogin from '../Form/Enter.vue';
 
 export default {
   props: {
@@ -42,6 +50,7 @@ export default {
   },
   components: {
     'form-register': FormRegister,
+    'form-login': FormLogin,
   },
   methods: {
     closeModal: function () {
