@@ -54,9 +54,12 @@ export default {
       title: '',
       subtitle: '',
       text: '',
-      errors: new Map([["410", "Заполните текст заметки!"]]),
+      errors: '',
       maxLength: 200,
     };
+  },
+  mounted: function () {
+    this.errors = this.$store.getters.ERRORS;
   },
   computed: {
     countLength: function () {
@@ -66,9 +69,9 @@ export default {
   watch: {
     text: function (value) {
       if (value.length < 1) {
-        this.errors.set("410", "Заполните текст заметки!");
+        this.$store.commit('ADD_ERROR', {id: '410', text: 'Заполните текст заметки!'});
       } else {
-        this.errors.delete("410")
+        this.$store.commit('REMOVE_ERROR', '410');
       }
       if (value.length > this.maxLength) {
         this.text = value.substr(0, this.maxLength);
@@ -77,7 +80,7 @@ export default {
   },
   methods: {
     disabledSubmit: function () {
-      if (this.errors.has("410")) {
+      if (this.$store.getters.ERRORS.has("410")) {
         return true;
        } else {
         return false;
@@ -85,30 +88,22 @@ export default {
     },
     formSubmit: function (event) {
       event.preventDefault();
-      var form = event.target;
-      var vm = this;
-      var response = axios.post(this.params.action.url, {
-        title: vm.title,
-        subtitle: vm.subtitle,
-        text: vm.text,
-        user_id: JSON.parse(localStorage.getItem('user')).user_id
-      },{
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      this.$store.dispatch('ADD_CARD', {
+        title: this.title,
+        subtitle: this.subtitle,
+        text: this.text,
+        path: this.params.action.url
       })
-      .then(function(response) {
-        if (response.data.code == "200") {
-          form.reset();
-          vm.errors.clear();
-          vm.$parent.closeModal();
-          alert(response.data.answer);
+      .then((data) => {
+        if (data.code === "200") {
+          event.target.reset();
+          this.$parent.closeModal();
+          alert(data.answer);
         } else {
-          if (!vm.errors.has(response.data.code)) {
-            vm.errors.set(response.data.code, response.data.answer);
+          if (!this.$store.getters.ERRORS.has(data.code)) {
+            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
           }
         }
-      })
-      .catch(error => {
-        console.log(error);
       });
     },
   }

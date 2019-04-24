@@ -19,6 +19,8 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   props: {
     card: {
@@ -28,8 +30,11 @@ export default {
   },
   methods: {
     deleteCard: function (event) {
-      // TODO: Добавить сюда удаление по клику
-    }
-  }
+      this.$store.dispatch('DELETE_CARD', this.card.note_id)
+      .then( (data) => {
+        alert(data.answer);
+      });
+    },
+  },
 }
 </script>

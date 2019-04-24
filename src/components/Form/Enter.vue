@@ -5,7 +5,7 @@
   v-on:submit="formSubmit"
   >
     <div class="form-error-list">
-      <span v-for="error in errors" v-text.sync="error[1]" class="error-item"></span>
+      <span v-for="error in errors" v-text="error[1]" class="error-item"></span>
     </div>
     <div class="form-group">
       <label for="email">Логин(e-mail):</label>
@@ -16,9 +16,7 @@
       <input id="password" type="password" v-model="password" required>
     </div>
     <input
-    id="submit"
     type="submit"
-    name="submit"
     :value="params.text"
     :disabled="disabledSubmit()"
     >
@@ -26,7 +24,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import {mapGetters} from 'vuex';
 
 export default {
   props: {
@@ -47,11 +45,11 @@ export default {
     return {
       email: '',
       password: '',
-      errors: new Map([["408", "Заполните email!"], ["409", "Заполните пароль!"]]),
+      errors: '',
     };
   },
-  computed: {
-
+  mounted: function () {
+    this.errors = this.$store.getters.ERRORS;
   },
   watch: {
     password: 'checkPasswordsEquality',
@@ -59,7 +57,7 @@ export default {
   },
   methods: {
     disabledSubmit: function () {
-      if (this.errors.has("408")  || this.errors.has("409")) {
+      if (this.$store.getters.ERRORS.has("408")  || this.$store.getters.ERRORS.has("409")) {
         return true;
        } else {
         return false;
@@ -67,46 +65,39 @@ export default {
     },
     formSubmit: function (event) {
       event.preventDefault();
-      var form = event.target;
-      var vm = this;
-      var response = axios.post(this.params.action.url, {
-        email: vm.email,
-        password: vm.password
-      },{
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
+      this.$store.dispatch('GET_USER_BY_PASSWORD', {
+        email: this.email,
+        password: this.password,
+        path: this.params.action.url
       })
-      .then(function(response) {
-        if (response.data.code == "200") {
-          form.reset();
-          vm.errors.clear();
-          vm.$parent.closeModal();
-          alert(response.data.answer);
-          console.log(response.data.data);
-          localStorage.setItem('user', JSON.stringify(response.data.data));
+      .then((data) => {
+        console.log(data);
+        if (data.code === "200") {
+          this.$store.dispatch('LOGIN_USER', data);
+          event.target.reset();
+          this.$parent.closeModal();
+          alert(data.answer);
         } else {
-          if (!vm.errors.has(response.data.code)) {
-            vm.errors.set(response.data.code, response.data.answer);
+          if (!this.$store.getters.ERRORS.has(data.code)) {
+            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
           }
         }
-      })
-      .catch(error => {
-        console.log(error);
       });
     },
     checkEmail: function () {
-      const {email} = this;
+      const { email } = this;
       if (email.length < 1) {
-        this.errors.set("408", "Заполните email!");
+        this.$store.commit('ADD_ERROR', {id: '408', text: 'Заполните email!'});
       } else {
-        this.errors.delete("408")
+        this.$store.commit('REMOVE_ERROR', '408');
       }
     },
     checkPasswordsEquality: function () {
       const { password } = this;
       if (password.length < 1) {
-        this.errors.set("409", "Заполните пароль!");
+        this.$store.commit('ADD_ERROR', {id: '409', text: 'Заполните пароль!'});
       } else {
-        this.errors.delete("409")
+        this.$store.commit('REMOVE_ERROR', '409');
       }
     }
   }

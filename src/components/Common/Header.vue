@@ -21,24 +21,25 @@ export default {
   },
   data () {
     return {
-      links: new Map([
-        ['add', {action: this.actions.newNote, text: 'Добавить'}],
-        ['enter', {action: this.actions.login, text: 'Войти'}],
-        ['register', {action: this.actions.signup, text: 'Регистрация'}],
-			])
+      links: new Map()
     }
   },
   computed: {
     userName: function () {
-      var userName = 'Гостя'
-      if (localStorage.getItem('user') !== null) {
-        userName = JSON.parse(localStorage.getItem('user')).name;
-        this.links.delete('enter');
-        this.links.delete('register');
-        this.links.set('exit', {action: this.actions.logout, text: 'Выйти'})
+      if (this.$store.getters.USER.user_id !== -1) {
+        this.links = new Map([
+          ['add', {action: this.actions.newNote, text: 'Добавить'}],
+          ['exit', {action: this.actions.logout, text: 'Выйти'}],
+  			]);
+      } else {
+        this.links = new Map([
+          ['add', {action: this.actions.newNote, text: 'Добавить'}],
+          ['enter', {action: this.actions.login, text: 'Войти'}],
+          ['register', {action: this.actions.signup, text: 'Регистрация'}],
+  			]);
       }
-      return userName;
-    }
+      return  this.$store.getters.USER.name;
+    },
   },
   components: {
     'navigation': NavigationComponent

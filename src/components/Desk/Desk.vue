@@ -26,45 +26,17 @@ import axios from 'axios';
 
 import DeskCardComponent from './DeskCard.vue' ;
 export default {
-  data () {
-    return {
-      cards: [],
-    }
-  },
   computed: {
     cardsExists: function () {
       return this.cards.length > 0;
-    }
+    },
+    cards: function () {
+      console.log(this.$store.getters.CARDS);
+      return this.$store.getters.CARDS;
+    },
   },
-  created: function () {
-    var vm = this;
-    axios.post(vm.$parent.backendUrl + '/note', {
-      user_id: JSON.parse(localStorage.getItem('user')).user_id
-    },{
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-    })
-    .then(function(response) {
-      vm.cards = response.data.answer;
-    })
-    .catch(error => {
-      console.log(error);
-    });
-  },
-  methods: {
-    getCards: function () {
-      var vm = this;
-      axios.post(vm.$parent.backendUrl + '/note', {
-        user_id: JSON.parse(localStorage.getItem('user')).user_id
-      },{
-        headers: {'Content-Type': 'application/x-www-form-urlencoded'}
-      })
-      .then(function(response) {
-        vm.cards = response.data.answer;
-      })
-      .catch(error => {
-        console.log(error);
-      });
-    }
+  beforeCreate() {
+    this.$store.dispatch('GET_CARDS');
   },
   components: {
     'desk-card': DeskCardComponent
