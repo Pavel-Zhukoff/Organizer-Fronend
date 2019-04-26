@@ -5,7 +5,7 @@
   v-on:submit="formSubmit"
   >
     <div class="form-error-list">
-      <span v-for="error in errors" v-text.sync="error[1]" class="error-item"></span>
+      <span v-for="[index, error] in errorsList" v-text.sync="error" class="error-item"></span>
     </div>
     <div class="form-group">
       <label for="title">Заголовок:</label>
@@ -55,17 +55,19 @@ export default {
       subtitle: "",
       text: "",
       maxLength: 200,
+      errors: new Map(),
+      changes: 1,
     };
   },
   created: function () {
-    this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
+    this.errors.set("410", "Заполните текст заметки!");
   },
   computed: {
-    ...mapState({
-      errors: (state) => state.error.errors,
-    }),
     countLength: function () {
       return this.text.length;
+    },
+    errorsList: function () {
+      return this.changes && Array.from(this.errors);
     },
   },
   watch: {
@@ -75,9 +77,11 @@ export default {
     textWatcher: function () {
       let { text } = this;
       if (text.length < 1) {
-        this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
+        this.errors.set("410", "Заполните текст заметки!");
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "410");
+        this.errors.delete("410");
+        this.changes += 1;
       }
       if (text.length > this.maxLength) {
         this.text = text.substr(0, this.maxLength);
@@ -93,14 +97,15 @@ export default {
     formSubmit: function (event) {
       event.preventDefault();
       this.$store.dispatch("ADD_CARD", {
-        title: this.title,
-        subtitle: this.subtitle,
-        text: this.text,
+        title: this.title.trim(),
+        subtitle: this.subtitle.trim(),
+        text: this.text.trim(),
         path: this.params.action.url
       })
       .then((data) => {
         if (data.code === "200") {
-          this.$store.commit("CELAR_ERRORS");
+          this.errors.clear();
+          this.changes += 1;
           this.$parent.$emit('close');
           this.title = "";
           this.subtitle = "";
@@ -108,7 +113,8 @@ export default {
           alert(data.answer);
         } else {
           if (!this.errors.has(data.code)) {
-            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
+            this.errors.set( data.code, data.answer );
+            this.changes += 1;
           }
         }
       });

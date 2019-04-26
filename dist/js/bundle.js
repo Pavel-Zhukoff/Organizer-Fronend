@@ -3444,17 +3444,19 @@ __webpack_require__.r(__webpack_exports__);
       subtitle: "",
       text: "",
       maxLength: 200,
+      errors: new Map(),
+      changes: 1,
     };
   },
   created: function () {
-    this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
+    this.errors.set("410", "Заполните текст заметки!");
   },
   computed: {
-    ...Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-      errors: (state) => state.error.errors,
-    }),
     countLength: function () {
       return this.text.length;
+    },
+    errorsList: function () {
+      return this.changes && Array.from(this.errors);
     },
   },
   watch: {
@@ -3464,9 +3466,11 @@ __webpack_require__.r(__webpack_exports__);
     textWatcher: function () {
       let { text } = this;
       if (text.length < 1) {
-        this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
+        this.errors.set("410", "Заполните текст заметки!");
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "410");
+        this.errors.delete("410");
+        this.changes += 1;
       }
       if (text.length > this.maxLength) {
         this.text = text.substr(0, this.maxLength);
@@ -3482,14 +3486,15 @@ __webpack_require__.r(__webpack_exports__);
     formSubmit: function (event) {
       event.preventDefault();
       this.$store.dispatch("ADD_CARD", {
-        title: this.title,
-        subtitle: this.subtitle,
-        text: this.text,
+        title: this.title.trim(),
+        subtitle: this.subtitle.trim(),
+        text: this.text.trim(),
         path: this.params.action.url
       })
       .then((data) => {
         if (data.code === "200") {
-          this.$store.commit("CELAR_ERRORS");
+          this.errors.clear();
+          this.changes += 1;
           this.$parent.$emit('close');
           this.title = "";
           this.subtitle = "";
@@ -3497,7 +3502,8 @@ __webpack_require__.r(__webpack_exports__);
           alert(data.answer);
         } else {
           if (!this.errors.has(data.code)) {
-            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
+            this.errors.set( data.code, data.answer );
+            this.changes += 1;
           }
         }
       });
@@ -3565,20 +3571,22 @@ __webpack_require__.r(__webpack_exports__);
     return {
       email: "",
       password: "",
+      errors: new Map(),
+      changes: 1,
     };
   },
   created: function () {
-    this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
-    this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
+    this.errors.set( "409", "Заполните пароль!" );
+    this.errors.set( "408", "Заполните email!" );
   },
   watch: {
     password: "checkPasswordsEquality",
     email: "checkEmail",
   },
   computed: {
-    ...Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-      errors: (state) => state.error.errors,
-    }),
+    errorsList: function () {
+      return this.changes && Array.from(this.errors);
+    },
   },
   methods: {
     disabledSubmit: function () {
@@ -3592,13 +3600,14 @@ __webpack_require__.r(__webpack_exports__);
     formSubmit: function (event) {
       event.preventDefault();
       this.$store.dispatch("GET_USER_BY_PASSWORD", {
-        email: this.email,
-        password: this.password,
+        email: this.email.trim(),
+        password: this.password.trim(),
         path: this.params.action.url
       })
       .then((data) => {
         if (data.code === "200") {
-        this.$store.commit("CELAR_ERRORS");
+          this.errors.clear();
+          this.changes += 1;
           this.$store.dispatch("LOGIN_USER", data);
           this.$parent.$emit('close');
           this.email = "";
@@ -3606,25 +3615,31 @@ __webpack_require__.r(__webpack_exports__);
           alert(data.answer);
         } else {
           if (!this.errors.has(data.code)) {
-            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
+            this.errors.set( data.code, data.answer );
+            this.changes += 1;
           }
         }
       });
+      console.log(this.errors);
     },
     checkEmail: function () {
       const { email } = this;
       if (email.length < 1) {
-        this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
+        this.errors.set( "408", "Заполните email!" );
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "408");
+        this.errors.delete("408");
+        this.changes += 1;
       }
     },
     checkPasswordsEquality: function () {
       const { password } = this;
       if (password.length < 1) {
-        this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
+        this.errors.set( "409", "Заполните пароль!" );
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "409");
+        this.errors.delete("409");
+        this.changes += 1;
       }
     }
   }
@@ -3702,21 +3717,23 @@ __webpack_require__.r(__webpack_exports__);
       password: "",
       confirm: "",
       name: "",
+      errors: new Map(),
+      changes: 1,
     };
   },
   created: function () {
-    this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
-    this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
-  },
-  computed: {
-    ...Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
-      errors: ( state ) => state.error.errors,
-    }),
+    this.errors.set( "409", "Заполните пароль!" );
+    this.errors.set( "408", "Заполните email!" );
   },
   watch: {
     confirm: "checkPasswordsEquality",
     password: "checkPasswordsEquality",
     email: "checkEmail",
+  },
+  computed: {
+    errorsList: function () {
+      return this.changes && Array.from(this.errors);
+    },
   },
   methods: {
     disabledSubmit: function () {
@@ -3732,14 +3749,15 @@ __webpack_require__.r(__webpack_exports__);
     formSubmit: function (event) {
       event.preventDefault();
       this.$store.dispatch("ADD_USER", {
-        email: this.email,
-        password: this.password,
-        name: this.name,
+        email: this.email.trim(),
+        password: this.password.trim(),
+        name: this.name.trim(),
         path: this.params.action.url
       })
       .then((data) => {
         if (data.code === "200") {
-          this.$store.commit("CELAR_ERRORS");
+          this.errors.clear();
+          this.changes += 1;
           this.$store.dispatch("LOGIN_USER", data);
           this.email = "";
           this.password = "";
@@ -3749,7 +3767,8 @@ __webpack_require__.r(__webpack_exports__);
           alert(data.answer);
         } else {
           if (!this.errors.has(data.code)) {
-            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
+            this.errors.set( data.code, data.answer );
+            this.changes += 1;
           }
         }
       });
@@ -3758,29 +3777,37 @@ __webpack_require__.r(__webpack_exports__);
       const { email } = this;
 
       if (email.length < 1) {
-        this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
+        this.errors.set( "408", "Заполните email!" );
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "408");
+        this.errors.delete("408");
+        this.changes += 1;
       }
     },
     checkPasswordsEquality: function () {
       const { password, confirm } = this;
       if (!password.match("((?:[a-z][a-z]*[0-9]+[a-z0-9]*))") && password.length < 8) {
-        this.$store.commit("ADD_ERROR", {id: "407", text: "Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!"});
+        this.errors.set( "407", "Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!" );
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "407");
+        this.errors.delete("407");
+        this.changes += 1;
       }
 
       if (password !== confirm) {
-        this.$store.commit("ADD_ERROR", {id: "406", text: "Пароли не совпадают!"});
+        this.errors.set( "406", "Пароли не совпадают!" );
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "406");
+        this.errors.delete("406");
+        this.changes += 1;
       }
 
       if (password.length < 1) {
-        this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
+        this.errors.set( "409", "Заполните пароль!" );
+        this.changes += 1;
       } else {
-        this.$store.commit("REMOVE_ERROR", "409");
+        this.errors.delete("409");
+        this.changes += 1;
       }
     }
   }
@@ -4110,10 +4137,12 @@ var render = function() {
       _c(
         "div",
         { staticClass: "form-error-list" },
-        _vm._l(_vm.errors, function(error) {
+        _vm._l(_vm.errorsList, function(ref) {
+          var index = ref[0]
+          var error = ref[1]
           return _c("span", {
             staticClass: "error-item",
-            domProps: { textContent: _vm._s(error[1]) }
+            domProps: { textContent: _vm._s(error) }
           })
         }),
         0
@@ -4242,10 +4271,12 @@ var render = function() {
       _c(
         "div",
         { staticClass: "form-error-list" },
-        _vm._l(_vm.errors, function(error) {
+        _vm._l(_vm.errorsList, function(ref) {
+          var index = ref[0]
+          var error = ref[1]
           return _c("span", {
             staticClass: "error-item",
-            domProps: { textContent: _vm._s(error[1]) }
+            domProps: { textContent: _vm._s(error) }
           })
         }),
         0
@@ -4340,10 +4371,12 @@ var render = function() {
       _c(
         "div",
         { staticClass: "form-error-list" },
-        _vm._l(_vm.errors, function(error) {
+        _vm._l(_vm.errorsList, function(ref) {
+          var index = ref[0]
+          var error = ref[1]
           return _c("span", {
             staticClass: "error-item",
-            domProps: { textContent: _vm._s(error[1]) }
+            domProps: { textContent: _vm._s(error) }
           })
         }),
         0
@@ -18309,9 +18342,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
 /* harmony import */ var _modules_card__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./modules/card */ "./src/js/storage/modules/card.js");
 /* harmony import */ var _modules_user__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./modules/user */ "./src/js/storage/modules/user.js");
-/* harmony import */ var _modules_error__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/error */ "./src/js/storage/modules/error.js");
-/* harmony import */ var _modules_backend__WEBPACK_IMPORTED_MODULE_6__ = __webpack_require__(/*! ./modules/backend */ "./src/js/storage/modules/backend.js");
-
+/* harmony import */ var _modules_backend__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./modules/backend */ "./src/js/storage/modules/backend.js");
 
 
 
@@ -18327,8 +18358,7 @@ var storage = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
   modules: {
     card: _modules_card__WEBPACK_IMPORTED_MODULE_3__["default"],
     user: _modules_user__WEBPACK_IMPORTED_MODULE_4__["default"],
-    error: _modules_error__WEBPACK_IMPORTED_MODULE_5__["default"],
-    backend: _modules_backend__WEBPACK_IMPORTED_MODULE_6__["default"]
+    backend: _modules_backend__WEBPACK_IMPORTED_MODULE_5__["default"]
   }
 });
 
@@ -18585,50 +18615,6 @@ var actions = {
     return ADD_CARD;
   }()
 };
-/* harmony default export */ __webpack_exports__["default"] = ({
-  state: state,
-  getters: getters,
-  mutations: mutations,
-  actions: actions
-});
-
-/***/ }),
-
-/***/ "./src/js/storage/modules/error.js":
-/*!*****************************************!*\
-  !*** ./src/js/storage/modules/error.js ***!
-  \*****************************************/
-/*! exports provided: default */
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-__webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
-var state = {
-  errors: new Map()
-};
-var getters = {
-  ERRORS: function ERRORS(state) {
-    return state.errors;
-  }
-};
-var mutations = {
-  SET_ERRORS: function SET_ERRORS(state, payload) {
-    state.errors = payload;
-  },
-  CLEAR_ERRORS: function CLEAR_ERRORS(state) {
-    state.errors.clear();
-  },
-  ADD_ERROR: function ADD_ERROR(state, payload) {
-    state.errors.set(payload.id, payload.text);
-  },
-  REMOVE_ERROR: function REMOVE_ERROR(state, payload) {
-    state.errors["delete"](payload);
-  }
-};
-var actions = {};
 /* harmony default export */ __webpack_exports__["default"] = ({
   state: state,
   getters: getters,
