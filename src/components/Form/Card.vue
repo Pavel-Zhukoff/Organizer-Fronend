@@ -32,7 +32,7 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -41,46 +41,50 @@ export default {
       default: function () {
         return {
           action: {
-            url: '#',
+            url: "#",
           },
-          method: 'post',
-          text: 'Добавить',
+          method: "post",
+          text: "Добавить",
         };
       },
     },
   },
   data() {
     return {
-      title: '',
-      subtitle: '',
-      text: '',
-      errors: '',
+      title: "",
+      subtitle: "",
+      text: "",
       maxLength: 200,
     };
   },
-  mounted: function () {
-    this.errors = this.$store.getters.ERRORS;
+  created: function () {
+    this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
   },
   computed: {
+    ...mapState({
+      errors: (state) => state.error.errors,
+    }),
     countLength: function () {
       return this.text.length;
     },
   },
   watch: {
-    text: function (value) {
-      if (value.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '410', text: 'Заполните текст заметки!'});
-      } else {
-        this.$store.commit('REMOVE_ERROR', '410');
-      }
-      if (value.length > this.maxLength) {
-        this.text = value.substr(0, this.maxLength);
-      }
-    }
+    text: "textWatcher",
   },
   methods: {
+    textWatcher: function () {
+      let { text } = this;
+      if (text.length < 1) {
+        this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
+      } else {
+        this.$store.commit("REMOVE_ERROR", "410");
+      }
+      if (text.length > this.maxLength) {
+        this.text = text.substr(0, this.maxLength);
+      }
+    },
     disabledSubmit: function () {
-      if (this.$store.getters.ERRORS.has("410")) {
+      if (this.errors.has("410")) {
         return true;
        } else {
         return false;
@@ -88,7 +92,7 @@ export default {
     },
     formSubmit: function (event) {
       event.preventDefault();
-      this.$store.dispatch('ADD_CARD', {
+      this.$store.dispatch("ADD_CARD", {
         title: this.title,
         subtitle: this.subtitle,
         text: this.text,
@@ -96,12 +100,15 @@ export default {
       })
       .then((data) => {
         if (data.code === "200") {
-          event.target.reset();
-          this.$parent.closeModal();
+          this.$store.commit("CELAR_ERRORS");
+          this.$parent.$emit('close');
+          this.title = "";
+          this.subtitle = "";
+          this.text = "";
           alert(data.answer);
         } else {
-          if (!this.$store.getters.ERRORS.has(data.code)) {
-            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
+          if (!this.errors.has(data.code)) {
+            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
           }
         }
       });

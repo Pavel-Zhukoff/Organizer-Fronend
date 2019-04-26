@@ -16,6 +16,8 @@
 
 html {
   font-size: 16px;
+  overflow-x: hidden;
+  
   @media screen and (max-width: map-get($grid-breakpoints, 'sm')) {
     font-size: 14px;
   }
@@ -143,6 +145,12 @@ nav {
 
   .card-content {
     color: map-get($colors, 'background');
+  }
+
+  .card-footer {
+    color: map-get($colors, 'background');
+    font-size: .75rem;
+    opacity: .75;
   }
 }
 

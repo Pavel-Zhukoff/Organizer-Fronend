@@ -1,12 +1,12 @@
-import Vue from 'vue/dist/vue.js';
-import Vuex from 'vuex';
+import Vue from "vue/dist/vue.js";
+import Vuex from "vuex";
 
-import Axios from 'axios';
+import Axios from "axios";
 
-import card from './modules/card';
-import user from './modules/user';
-import error from './modules/error';
-import backend from './modules/backend';
+import card from "./modules/card";
+import user from "./modules/user";
+import error from "./modules/error";
+import backend from "./modules/backend";
 
 Vue.use(Vuex);
 

@@ -24,17 +24,17 @@
       <input id="confirm" type="password" v-model="confirm" required>
     </div>
     <input
-    id="submit"
-    type="submit"
-    name="submit"
+     id="submit"
+     type="submit"
+     name="submit"
     :value="params.text"
-    :disabled="disabledSubmit()"
+     :disabled="disabledSubmit()"
     >
   </form>
 </template>
 
 <script>
-import axios from 'axios';
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -43,38 +43,42 @@ export default {
       default: function () {
         return {
           action: {
-            url: '#',
+            url: "#",
           },
-          method: 'post',
-          text: 'Отправить',
+          method: "post",
+          text: "Отправить",
         };
       },
     },
   },
   data() {
     return {
-      email: '',
-      password: '',
-      confirm: '',
-      name: '',
+      email: "",
+      password: "",
+      confirm: "",
+      name: "",
     };
   },
+  created: function () {
+    this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
+    this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
+  },
   computed: {
-    errors() {
-      return this.$store.getters.ERRORS;
-    },
+    ...mapState({
+      errors: ( state ) => state.error.errors,
+    }),
   },
   watch: {
-    confirm: 'checkPasswordsEquality',
-    password: 'checkPasswordsEquality',
-    email: 'checkEmail',
+    confirm: "checkPasswordsEquality",
+    password: "checkPasswordsEquality",
+    email: "checkEmail",
   },
   methods: {
     disabledSubmit: function () {
-      if ( this.$store.getters.ERRORS.has("406")
-        || this.$store.getters.ERRORS.has("407")
-        || this.$store.getters.ERRORS.has("408")
-        || this.$store.getters.ERRORS.has("409") ) {
+      if ( this.errors.has("406")
+        || this.errors.has("407")
+        || this.errors.has("408")
+        || this.errors.has("409") ) {
         return true;
        } else {
         return false;
@@ -82,52 +86,56 @@ export default {
     },
     formSubmit: function (event) {
       event.preventDefault();
-      this.$store.dispatch('ADD_USER', {
+      this.$store.dispatch("ADD_USER", {
         email: this.email,
         password: this.password,
         name: this.name,
         path: this.params.action.url
       })
       .then((data) => {
-        console.log(data);
         if (data.code === "200") {
-          this.$store.dispatch('LOGIN_USER', data);
-          event.target.reset();
-          this.$parent.closeModal();
+          this.$store.commit("CELAR_ERRORS");
+          this.$store.dispatch("LOGIN_USER", data);
+          this.email = "";
+          this.password = "";
+          this.confirm = "";
+          this.name = "";
+          this.$parent.$emit('close');
           alert(data.answer);
         } else {
-          if (!this.$store.getters.ERRORS.has(data.code)) {
-            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
+          if (!this.errors.has(data.code)) {
+            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
           }
         }
       });
     },
     checkEmail: function () {
       const { email } = this;
+
       if (email.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '408', text: 'Заполните email!'});
+        this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '408');
+        this.$store.commit("REMOVE_ERROR", "408");
       }
     },
     checkPasswordsEquality: function () {
       const { password, confirm } = this;
       if (!password.match("((?:[a-z][a-z]*[0-9]+[a-z0-9]*))") && password.length < 8) {
-        this.$store.commit('ADD_ERROR', {id: '407', text: 'Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!'});
+        this.$store.commit("ADD_ERROR", {id: "407", text: "Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '407');
+        this.$store.commit("REMOVE_ERROR", "407");
       }
 
       if (password !== confirm) {
-        this.$store.commit('ADD_ERROR', {id: '406', text: 'Пароли не совпадают!'});
+        this.$store.commit("ADD_ERROR", {id: "406", text: "Пароли не совпадают!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '406');
+        this.$store.commit("REMOVE_ERROR", "406");
       }
 
       if (password.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '409', text: 'Заполните пароль!'});
+        this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '409');
+        this.$store.commit("REMOVE_ERROR", "409");
       }
     }
   }

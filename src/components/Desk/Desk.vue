@@ -22,24 +22,27 @@
 </template>
 
 <script>
-import axios from 'axios';
+import { mapState, mapGetters } from 'vuex';
+import DeskCardComponent from "./DeskCard.vue";
 
-import DeskCardComponent from './DeskCard.vue' ;
 export default {
+  data() {
+    return {
+      count: 0,
+    };
+  },
   computed: {
-    cardsExists: function () {
-      return this.cards.length > 0;
-    },
-    cards: function () {
-      console.log(this.$store.getters.CARDS);
-      return this.$store.getters.CARDS;
-    },
+    ...mapState({
+      cards: (state) => state.card.cards,
+      cardsExists: (state) => state.card.cards.length > 0,
+    }),
   },
-  beforeCreate() {
-    this.$store.dispatch('GET_CARDS');
+  created: function () {
+    this.$store.dispatch("GET_CARDS");
   },
+
   components: {
-    'desk-card': DeskCardComponent
+    "desk-card": DeskCardComponent
   }
 }
 </script>

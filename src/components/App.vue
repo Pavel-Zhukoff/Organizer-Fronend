@@ -6,18 +6,17 @@
     <modal-component
      :title="modalTitle"
      :form="modalForm"
-     :show="modalShow"
+     v-show="modalShow"
+     @close="closeModal"
     ></modal-component>
   </div>
 
 </template>
 
 <script>
-import axios from 'axios';
-
-import HeaderComponent from './Common/Header.vue';
-import DeskComponent from './Desk/Desk.vue' ;
-import ModalComponent from './Modal/Modal.vue' ;
+import HeaderComponent from "./Common/Header.vue";
+import DeskComponent from "./Desk/Desk.vue" ;
+import ModalComponent from "./Modal/Modal.vue" ;
 
 export default {
   data() {
@@ -28,60 +27,65 @@ export default {
         logout: this.exit,
         newNote: this.noteFormRender,
       },
-      modalTitle: '',
+      modalTitle: "",
       modalForm: {},
       modalShow: false,
     };
   },
   methods: {
+    closeModal: function () {
+      this.modalShow = false;
+    },
     enterFormRender: function() {
-      this.modalTitle = 'Вход.';
+      this.modalTitle = "Вход.";
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/login',
+          url: "/user/login",
         },
-        method: 'post',
-        text: 'Войти',
-        type: 'login'
+        method: "post",
+        text: "Войти",
+        type: "login"
       };
     },
     registerFormRender: function() {
-      this.modalTitle = 'Регистрация.';
+      this.modalTitle = "Регистрация.";
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/new',
+          url: "/user/new",
         },
-        method: 'post',
-        text: 'Поехали!',
-        type: 'signup',
+        method: "post",
+        text: "Поехали!",
+        type: "signup",
       };
     },
     noteFormRender: function () {
-      this.modalTitle = 'Добавить новую заметку.';
+      this.modalTitle = "Добавить новую заметку.";
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/note/new',
+          url: "/note/new",
         },
-        method: 'post',
-        text: 'Добавить',
-        type: 'card'
+        method: "post",
+        text: "Добавить",
+        type: "card"
       };
     },
     exit: function() {
-      this.$store.dispatch('REMOVE_USER');
+      this.$store.dispatch("REMOVE_USER")
+      .then((data) => {
+        alert(data.answer);
+      });
     },
   },
   components: {
-    'header-component': HeaderComponent,
-    'modal-component': ModalComponent,
-    'desk-component': DeskComponent
+    "header-component": HeaderComponent,
+    "modal-component": ModalComponent,
+    "desk-component": DeskComponent
   },
   created: function () {
-    this.$store.dispatch('GET_USER');
-    this.$store.dispatch('GET_CARDS');
+    this.$store.dispatch("GET_USER");
   },
 }
 </script>

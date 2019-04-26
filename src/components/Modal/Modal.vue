@@ -1,6 +1,6 @@
 <template lang="html">
   <transition name="fade">
-    <div class="modal-overlay" v-if="show">
+    <div class="modal-overlay">
       <div class="container-fluid">
         <div class="row justify-content-center mt-5">
           <div class="col-lg-6 col-md-8 col-11">
@@ -28,7 +28,7 @@
             </div>
           </div>
           <div class="col-md-1 col-2">
-            <div class="modal-close" v-on:click="closeModal"></div>
+            <div class="modal-close" @click="closeModal"></div>
           </div>
         </div>
       </div>
@@ -38,30 +38,23 @@
 </template>
 
 <script>
-import FormRegister from '../Form/Register.vue';
-import FormLogin from '../Form/Enter.vue';
-import FormCard from '../Form/Card.vue';
+import FormRegister from "../Form/Register.vue";
+import FormLogin from "../Form/Enter.vue";
+import FormCard from "../Form/Card.vue";
 
 export default {
   props: {
     title: String,
     form: Object,
-    type: String,
-    show: {
-      type: Boolean,
-      default: function() {
-        return false;
-      },
-    },
   },
   components: {
-    'form-register': FormRegister,
-    'form-login': FormLogin,
-    'form-card': FormCard,
+    "form-register": FormRegister,
+    "form-login": FormLogin,
+    "form-card": FormCard,
   },
   methods: {
     closeModal: function () {
-      this.show = !this.show;
+      this.$emit('close');
     }
   }
 }

@@ -3059,11 +3059,9 @@ exports.clearImmediate = (typeof self !== "undefined" && self.clearImmediate) ||
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-/* harmony import */ var _Common_Header_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Common/Header.vue */ "./src/components/Common/Header.vue");
-/* harmony import */ var _Desk_Desk_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Desk/Desk.vue */ "./src/components/Desk/Desk.vue");
-/* harmony import */ var _Modal_Modal_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./Modal/Modal.vue */ "./src/components/Modal/Modal.vue");
+/* harmony import */ var _Common_Header_vue__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./Common/Header.vue */ "./src/components/Common/Header.vue");
+/* harmony import */ var _Desk_Desk_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./Desk/Desk.vue */ "./src/components/Desk/Desk.vue");
+/* harmony import */ var _Modal_Modal_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./Modal/Modal.vue */ "./src/components/Modal/Modal.vue");
 //
 //
 //
@@ -3078,8 +3076,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
+//
 
 
 
@@ -3094,60 +3091,65 @@ __webpack_require__.r(__webpack_exports__);
         logout: this.exit,
         newNote: this.noteFormRender,
       },
-      modalTitle: '',
+      modalTitle: "",
       modalForm: {},
       modalShow: false,
     };
   },
   methods: {
+    closeModal: function () {
+      this.modalShow = false;
+    },
     enterFormRender: function() {
-      this.modalTitle = 'Вход.';
+      this.modalTitle = "Вход.";
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/login',
+          url: "/user/login",
         },
-        method: 'post',
-        text: 'Войти',
-        type: 'login'
+        method: "post",
+        text: "Войти",
+        type: "login"
       };
     },
     registerFormRender: function() {
-      this.modalTitle = 'Регистрация.';
+      this.modalTitle = "Регистрация.";
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/user/new',
+          url: "/user/new",
         },
-        method: 'post',
-        text: 'Поехали!',
-        type: 'signup',
+        method: "post",
+        text: "Поехали!",
+        type: "signup",
       };
     },
     noteFormRender: function () {
-      this.modalTitle = 'Добавить новую заметку.';
+      this.modalTitle = "Добавить новую заметку.";
       this.modalShow = true;
       this.modalForm = {
         action: {
-          url: '/note/new',
+          url: "/note/new",
         },
-        method: 'post',
-        text: 'Добавить',
-        type: 'card'
+        method: "post",
+        text: "Добавить",
+        type: "card"
       };
     },
     exit: function() {
-      this.$store.dispatch('REMOVE_USER');
+      this.$store.dispatch("REMOVE_USER")
+      .then((data) => {
+        alert(data.answer);
+      });
     },
   },
   components: {
-    'header-component': _Common_Header_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    'modal-component': _Modal_Modal_vue__WEBPACK_IMPORTED_MODULE_3__["default"],
-    'desk-component': _Desk_Desk_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
+    "header-component": _Common_Header_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    "modal-component": _Modal_Modal_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    "desk-component": _Desk_Desk_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   created: function () {
-    this.$store.dispatch('GET_USER');
-    this.$store.dispatch('GET_CARDS');
+    this.$store.dispatch("GET_USER");
   },
 });
 
@@ -3194,21 +3196,21 @@ __webpack_require__.r(__webpack_exports__);
     userName: function () {
       if (this.$store.getters.USER.user_id !== -1) {
         this.links = new Map([
-          ['add', {action: this.actions.newNote, text: 'Добавить'}],
-          ['exit', {action: this.actions.logout, text: 'Выйти'}],
+          ["add", {action: this.actions.newNote, text: "Добавить"}],
+          ["exit", {action: this.actions.logout, text: "Выйти"}],
   			]);
       } else {
         this.links = new Map([
-          ['add', {action: this.actions.newNote, text: 'Добавить'}],
-          ['enter', {action: this.actions.login, text: 'Войти'}],
-          ['register', {action: this.actions.signup, text: 'Регистрация'}],
+          ["add", {action: this.actions.newNote, text: "Добавить"}],
+          ["enter", {action: this.actions.login, text: "Войти"}],
+          ["register", {action: this.actions.signup, text: "Регистрация"}],
   			]);
       }
       return  this.$store.getters.USER.name;
     },
   },
   components: {
-    'navigation': _Navigation_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
+    "navigation": _Navigation_vue__WEBPACK_IMPORTED_MODULE_0__["default"]
   }
 });
 
@@ -3257,8 +3259,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 /* harmony import */ var _DeskCard_vue__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./DeskCard.vue */ "./src/components/Desk/DeskCard.vue");
 //
 //
@@ -3288,20 +3289,23 @@ __webpack_require__.r(__webpack_exports__);
 
 
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data() {
+    return {
+      count: 0,
+    };
+  },
   computed: {
-    cardsExists: function () {
-      return this.cards.length > 0;
-    },
-    cards: function () {
-      console.log(this.$store.getters.CARDS);
-      return this.$store.getters.CARDS;
-    },
+    ...Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+      cards: (state) => state.card.cards,
+      cardsExists: (state) => state.card.cards.length > 0,
+    }),
   },
-  beforeCreate() {
-    this.$store.dispatch('GET_CARDS');
+  created: function () {
+    this.$store.dispatch("GET_CARDS");
   },
+
   components: {
-    'desk-card': _DeskCard_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
+    "desk-card": _DeskCard_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   }
 });
 
@@ -3317,8 +3321,6 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
 //
 //
 //
@@ -3339,8 +3341,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-
-
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   props: {
@@ -3351,12 +3354,24 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     deleteCard: function (event) {
-      this.$store.dispatch('DELETE_CARD', this.card.note_id)
+      this.$store.dispatch("DELETE_CARD", this.card.note_id)
       .then( (data) => {
         alert(data.answer);
       });
     },
   },
+  computed: {
+    cardDate: function () {
+      let a = new Date();
+      a.setTime(this.card.creation_date * 1000);
+       return a.toLocaleDateString("ru-RU",{
+        weekday: 'long',
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    }
+  }
 });
 
 
@@ -3371,8 +3386,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -3416,46 +3430,50 @@ __webpack_require__.r(__webpack_exports__);
       default: function () {
         return {
           action: {
-            url: '#',
+            url: "#",
           },
-          method: 'post',
-          text: 'Добавить',
+          method: "post",
+          text: "Добавить",
         };
       },
     },
   },
   data() {
     return {
-      title: '',
-      subtitle: '',
-      text: '',
-      errors: '',
+      title: "",
+      subtitle: "",
+      text: "",
       maxLength: 200,
     };
   },
-  mounted: function () {
-    this.errors = this.$store.getters.ERRORS;
+  created: function () {
+    this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
   },
   computed: {
+    ...Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+      errors: (state) => state.error.errors,
+    }),
     countLength: function () {
       return this.text.length;
     },
   },
   watch: {
-    text: function (value) {
-      if (value.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '410', text: 'Заполните текст заметки!'});
-      } else {
-        this.$store.commit('REMOVE_ERROR', '410');
-      }
-      if (value.length > this.maxLength) {
-        this.text = value.substr(0, this.maxLength);
-      }
-    }
+    text: "textWatcher",
   },
   methods: {
+    textWatcher: function () {
+      let { text } = this;
+      if (text.length < 1) {
+        this.$store.commit("ADD_ERROR", {id: "410", text: "Заполните текст заметки!"});
+      } else {
+        this.$store.commit("REMOVE_ERROR", "410");
+      }
+      if (text.length > this.maxLength) {
+        this.text = text.substr(0, this.maxLength);
+      }
+    },
     disabledSubmit: function () {
-      if (this.$store.getters.ERRORS.has("410")) {
+      if (this.errors.has("410")) {
         return true;
        } else {
         return false;
@@ -3463,7 +3481,7 @@ __webpack_require__.r(__webpack_exports__);
     },
     formSubmit: function (event) {
       event.preventDefault();
-      this.$store.dispatch('ADD_CARD', {
+      this.$store.dispatch("ADD_CARD", {
         title: this.title,
         subtitle: this.subtitle,
         text: this.text,
@@ -3471,12 +3489,15 @@ __webpack_require__.r(__webpack_exports__);
       })
       .then((data) => {
         if (data.code === "200") {
-          event.target.reset();
-          this.$parent.closeModal();
+          this.$store.commit("CELAR_ERRORS");
+          this.$parent.$emit('close');
+          this.title = "";
+          this.subtitle = "";
+          this.text = "";
           alert(data.answer);
         } else {
-          if (!this.$store.getters.ERRORS.has(data.code)) {
-            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
+          if (!this.errors.has(data.code)) {
+            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
           }
         }
       });
@@ -3532,31 +3553,37 @@ __webpack_require__.r(__webpack_exports__);
       default: function () {
         return {
           action: {
-            url: '#',
+            url: "#",
           },
-          method: 'post',
-          text: 'Отправить',
+          method: "post",
+          text: "Отправить",
         };
       },
     },
   },
   data() {
     return {
-      email: '',
-      password: '',
-      errors: '',
+      email: "",
+      password: "",
     };
   },
-  mounted: function () {
-    this.errors = this.$store.getters.ERRORS;
+  created: function () {
+    this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
+    this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
   },
   watch: {
-    password: 'checkPasswordsEquality',
-    email: 'checkEmail',
+    password: "checkPasswordsEquality",
+    email: "checkEmail",
+  },
+  computed: {
+    ...Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+      errors: (state) => state.error.errors,
+    }),
   },
   methods: {
     disabledSubmit: function () {
-      if (this.$store.getters.ERRORS.has("408")  || this.$store.getters.ERRORS.has("409")) {
+      if ( this.errors.has("408")
+        || this.errors.has("409") ) {
         return true;
        } else {
         return false;
@@ -3564,21 +3591,22 @@ __webpack_require__.r(__webpack_exports__);
     },
     formSubmit: function (event) {
       event.preventDefault();
-      this.$store.dispatch('GET_USER_BY_PASSWORD', {
+      this.$store.dispatch("GET_USER_BY_PASSWORD", {
         email: this.email,
         password: this.password,
         path: this.params.action.url
       })
       .then((data) => {
-        console.log(data);
         if (data.code === "200") {
-          this.$store.dispatch('LOGIN_USER', data);
-          event.target.reset();
-          this.$parent.closeModal();
+        this.$store.commit("CELAR_ERRORS");
+          this.$store.dispatch("LOGIN_USER", data);
+          this.$parent.$emit('close');
+          this.email = "";
+          this.password = "";
           alert(data.answer);
         } else {
-          if (!this.$store.getters.ERRORS.has(data.code)) {
-            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
+          if (!this.errors.has(data.code)) {
+            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
           }
         }
       });
@@ -3586,17 +3614,17 @@ __webpack_require__.r(__webpack_exports__);
     checkEmail: function () {
       const { email } = this;
       if (email.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '408', text: 'Заполните email!'});
+        this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '408');
+        this.$store.commit("REMOVE_ERROR", "408");
       }
     },
     checkPasswordsEquality: function () {
       const { password } = this;
       if (password.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '409', text: 'Заполните пароль!'});
+        this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '409');
+        this.$store.commit("REMOVE_ERROR", "409");
       }
     }
   }
@@ -3614,8 +3642,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
 //
 //
 //
@@ -3661,38 +3688,42 @@ __webpack_require__.r(__webpack_exports__);
       default: function () {
         return {
           action: {
-            url: '#',
+            url: "#",
           },
-          method: 'post',
-          text: 'Отправить',
+          method: "post",
+          text: "Отправить",
         };
       },
     },
   },
   data() {
     return {
-      email: '',
-      password: '',
-      confirm: '',
-      name: '',
+      email: "",
+      password: "",
+      confirm: "",
+      name: "",
     };
   },
+  created: function () {
+    this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
+    this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
+  },
   computed: {
-    errors() {
-      return this.$store.getters.ERRORS;
-    },
+    ...Object(vuex__WEBPACK_IMPORTED_MODULE_0__["mapState"])({
+      errors: ( state ) => state.error.errors,
+    }),
   },
   watch: {
-    confirm: 'checkPasswordsEquality',
-    password: 'checkPasswordsEquality',
-    email: 'checkEmail',
+    confirm: "checkPasswordsEquality",
+    password: "checkPasswordsEquality",
+    email: "checkEmail",
   },
   methods: {
     disabledSubmit: function () {
-      if ( this.$store.getters.ERRORS.has("406")
-        || this.$store.getters.ERRORS.has("407")
-        || this.$store.getters.ERRORS.has("408")
-        || this.$store.getters.ERRORS.has("409") ) {
+      if ( this.errors.has("406")
+        || this.errors.has("407")
+        || this.errors.has("408")
+        || this.errors.has("409") ) {
         return true;
        } else {
         return false;
@@ -3700,52 +3731,56 @@ __webpack_require__.r(__webpack_exports__);
     },
     formSubmit: function (event) {
       event.preventDefault();
-      this.$store.dispatch('ADD_USER', {
+      this.$store.dispatch("ADD_USER", {
         email: this.email,
         password: this.password,
         name: this.name,
         path: this.params.action.url
       })
       .then((data) => {
-        console.log(data);
         if (data.code === "200") {
-          this.$store.dispatch('LOGIN_USER', data);
-          event.target.reset();
-          this.$parent.closeModal();
+          this.$store.commit("CELAR_ERRORS");
+          this.$store.dispatch("LOGIN_USER", data);
+          this.email = "";
+          this.password = "";
+          this.confirm = "";
+          this.name = "";
+          this.$parent.$emit('close');
           alert(data.answer);
         } else {
-          if (!this.$store.getters.ERRORS.has(data.code)) {
-            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
+          if (!this.errors.has(data.code)) {
+            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
           }
         }
       });
     },
     checkEmail: function () {
       const { email } = this;
+
       if (email.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '408', text: 'Заполните email!'});
+        this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '408');
+        this.$store.commit("REMOVE_ERROR", "408");
       }
     },
     checkPasswordsEquality: function () {
       const { password, confirm } = this;
       if (!password.match("((?:[a-z][a-z]*[0-9]+[a-z0-9]*))") && password.length < 8) {
-        this.$store.commit('ADD_ERROR', {id: '407', text: 'Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!'});
+        this.$store.commit("ADD_ERROR", {id: "407", text: "Пароль должен быть не короче 8 символов и содержать только буквы латинского алфавита и цифры!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '407');
+        this.$store.commit("REMOVE_ERROR", "407");
       }
 
       if (password !== confirm) {
-        this.$store.commit('ADD_ERROR', {id: '406', text: 'Пароли не совпадают!'});
+        this.$store.commit("ADD_ERROR", {id: "406", text: "Пароли не совпадают!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '406');
+        this.$store.commit("REMOVE_ERROR", "406");
       }
 
       if (password.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '409', text: 'Заполните пароль!'});
+        this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '409');
+        this.$store.commit("REMOVE_ERROR", "409");
       }
     }
   }
@@ -3814,22 +3849,15 @@ __webpack_require__.r(__webpack_exports__);
   props: {
     title: String,
     form: Object,
-    type: String,
-    show: {
-      type: Boolean,
-      default: function() {
-        return false;
-      },
-    },
   },
   components: {
-    'form-register': _Form_Register_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
-    'form-login': _Form_Enter_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
-    'form-card': _Form_Card_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
+    "form-register": _Form_Register_vue__WEBPACK_IMPORTED_MODULE_0__["default"],
+    "form-login": _Form_Enter_vue__WEBPACK_IMPORTED_MODULE_1__["default"],
+    "form-card": _Form_Card_vue__WEBPACK_IMPORTED_MODULE_2__["default"],
   },
   methods: {
     closeModal: function () {
-      this.show = !this.show;
+      this.$emit('close');
     }
   }
 });
@@ -3863,11 +3891,16 @@ var render = function() {
       _c("desk-component"),
       _vm._v(" "),
       _c("modal-component", {
-        attrs: {
-          title: _vm.modalTitle,
-          form: _vm.modalForm,
-          show: _vm.modalShow
-        }
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.modalShow,
+            expression: "modalShow"
+          }
+        ],
+        attrs: { title: _vm.modalTitle, form: _vm.modalForm },
+        on: { close: _vm.closeModal }
       })
     ],
     1
@@ -4020,7 +4053,7 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", { staticClass: "col-lg-4 col-md-6 col-12 mb-md-0 mb-2" }, [
+  return _c("div", { staticClass: "col-lg-4 col-md-6 col-12 mb-2" }, [
     _c("div", { staticClass: "card" }, [
       _c("div", {
         staticClass: "card-button-remove",
@@ -4037,6 +4070,10 @@ var render = function() {
       _vm._v(" "),
       _c("div", { staticClass: "card-content" }, [
         _c("p", [_vm._v("\r\n        " + _vm._s(_vm.card.text) + "\r\n      ")])
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "card-footer" }, [
+        _vm._v("\r\n      " + _vm._s(_vm.cardDate) + "\r\n    ")
       ])
     ])
   ])
@@ -4449,45 +4486,41 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("transition", { attrs: { name: "fade" } }, [
-    _vm.show
-      ? _c("div", { staticClass: "modal-overlay" }, [
-          _c("div", { staticClass: "container-fluid" }, [
-            _c("div", { staticClass: "row justify-content-center mt-5" }, [
-              _c("div", { staticClass: "col-lg-6 col-md-8 col-11" }, [
-                _c("div", { staticClass: "modal" }, [
-                  _c("div", { staticClass: "modal-title" }, [
-                    _c("h2", { staticClass: "title" }, [
-                      _vm._v(_vm._s(_vm.title))
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c(
-                    "div",
-                    { staticClass: "modal-body" },
-                    [
-                      _vm.form.type == "signup"
-                        ? [_c("form-register", { attrs: { params: _vm.form } })]
-                        : _vm.form.type == "login"
-                        ? [_c("form-login", { attrs: { params: _vm.form } })]
-                        : _vm.form.type == "card"
-                        ? [_c("form-card", { attrs: { params: _vm.form } })]
-                        : _vm._e()
-                    ],
-                    2
-                  )
-                ])
+    _c("div", { staticClass: "modal-overlay" }, [
+      _c("div", { staticClass: "container-fluid" }, [
+        _c("div", { staticClass: "row justify-content-center mt-5" }, [
+          _c("div", { staticClass: "col-lg-6 col-md-8 col-11" }, [
+            _c("div", { staticClass: "modal" }, [
+              _c("div", { staticClass: "modal-title" }, [
+                _c("h2", { staticClass: "title" }, [_vm._v(_vm._s(_vm.title))])
               ]),
               _vm._v(" "),
-              _c("div", { staticClass: "col-md-1 col-2" }, [
-                _c("div", {
-                  staticClass: "modal-close",
-                  on: { click: _vm.closeModal }
-                })
-              ])
+              _c(
+                "div",
+                { staticClass: "modal-body" },
+                [
+                  _vm.form.type == "signup"
+                    ? [_c("form-register", { attrs: { params: _vm.form } })]
+                    : _vm.form.type == "login"
+                    ? [_c("form-login", { attrs: { params: _vm.form } })]
+                    : _vm.form.type == "card"
+                    ? [_c("form-card", { attrs: { params: _vm.form } })]
+                    : _vm._e()
+                ],
+                2
+              )
             ])
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-md-1 col-2" }, [
+            _c("div", {
+              staticClass: "modal-close",
+              on: { click: _vm.closeModal }
+            })
           ])
         ])
-      : _vm._e()
+      ])
+    ])
   ])
 }
 var staticRenderFns = []
@@ -18242,10 +18275,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var vue_dist_vue_js__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue/dist/vue.js */ "./node_modules/vue/dist/vue.js");
 /* harmony import */ var vue_dist_vue_js__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(vue_dist_vue_js__WEBPACK_IMPORTED_MODULE_0__);
 /* harmony import */ var _storage_index__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./storage/index */ "./src/js/storage/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_2___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_2__);
-/* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ../components/App.vue */ "./src/components/App.vue");
-
+/* harmony import */ var _components_App_vue__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../components/App.vue */ "./src/components/App.vue");
 
 
 
@@ -18253,10 +18283,10 @@ new vue_dist_vue_js__WEBPACK_IMPORTED_MODULE_0___default.a({
   el: "#app",
   store: _storage_index__WEBPACK_IMPORTED_MODULE_1__["storage"],
   beforeCreate: function beforeCreate() {
-    document.title = 'Мастер заметок';
+    document.title = "Мастер заметок";
   },
   components: {
-    app: _components_App_vue__WEBPACK_IMPORTED_MODULE_3__["default"]
+    app: _components_App_vue__WEBPACK_IMPORTED_MODULE_2__["default"]
   }
 });
 
@@ -18313,11 +18343,8 @@ var storage = new vuex__WEBPACK_IMPORTED_MODULE_1__["default"].Store({
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
-/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
-
 var state = {
-  backendUrl: 'http://organizer-backend'
+  backendUrl: "http://organizer-backend"
 };
 var getters = {
   BACKEND_URL: function BACKEND_URL(state) {
@@ -18354,25 +18381,34 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var state = {
-  cards: []
+  cards: JSON.parse(localStorage.getItem("cards"))
 };
 var getters = {
   CARDS: function CARDS(state) {
     return state.cards;
+  },
+  CARDS_COUNT: function CARDS_COUNT(state) {
+    return state.cards.length;
   }
 };
 var mutations = {
   SET_CARDS: function SET_CARDS(state, payload) {
+    localStorage.setItem("cards", JSON.stringify(payload));
     state.cards = payload;
   },
   ADD_CARD: function ADD_CARD(state, payload) {
-    state.cards.push(payload);
+    state.cards.unshift(payload);
+    localStorage.setItem("cards", JSON.stringify(state.cards));
   },
   CLEAR_CARDS: function CLEAR_CARDS(state) {
     state.cards = [];
+    localStorage.setItem("cards", JSON.stringify(state.cards));
   },
   SAVE_CARDS: function SAVE_CARDS(state) {
-    localStorage.setItem('cards', JSON.stringify(state.CARDS));
+    localStorage.setItem("cards", JSON.stringify(state.cards));
+  },
+  DELETE_CARD: function DELETE_CARD(state, payload) {
+    state.cards.splice(payload, 1);
   }
 };
 var actions = {
@@ -18386,36 +18422,37 @@ var actions = {
         while (1) {
           switch (_context.prev = _context.next) {
             case 0:
-              console.log(context.getters.CARDS);
-
-              if (!(context.getters.USER.user_id !== -1)) {
-                _context.next = 9;
+              if (!(context.rootState.user.user.user_id !== -1)) {
+                _context.next = 8;
                 break;
               }
 
-              _context.next = 4;
-              return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + '/note', {
-                user_id: context.getters.USER.user_id
+              _context.next = 3;
+              return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + "/note", {
+                user_id: context.rootState.user.user.user_id
               }, {
                 headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
+                  "Content-Type": "application/x-www-form-urlencoded"
                 }
               });
 
-            case 4:
+            case 3:
               _ref = _context.sent;
               data = _ref.data;
-              context.commit('SET_CARDS', data.answer);
-              _context.next = 10;
+
+              if (data.code === "200") {
+                context.commit("SET_CARDS", data.answer);
+              } else {
+                context.commit("SET_CARDS", []);
+              }
+
+              _context.next = 9;
               break;
 
+            case 8:
+              context.commit("SET_CARDS", JSON.parse(localStorage.getItem("cards") === null ? "[]" : localStorage.getItem("cards")));
+
             case 9:
-              context.commit('SET_CARDS', JSON.parse(localStorage.getItem('cards')) == null ? [] : JSON.parse(localStorage.getItem('cards')));
-
-            case 10:
-              context.commit('SAVE_CARDS');
-
-            case 11:
             case "end":
               return _context.stop();
           }
@@ -18439,38 +18476,38 @@ var actions = {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
-              if (!(context.getters.USER.user_id !== -1)) {
-                _context2.next = 8;
+              if (!(context.rootState.user.user.user_id !== -1)) {
+                _context2.next = 5;
                 break;
               }
 
               _context2.next = 3;
-              return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + '/note/delete', {
+              return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + "/note/delete", {
                 id: payload
               }, {
                 headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
+                  "Content-Type": "application/x-www-form-urlencoded"
                 }
               });
 
             case 3:
               _ref2 = _context2.sent;
               data = _ref2.data;
-              return _context2.abrupt("return", data);
 
-            case 8:
+            case 5:
               indexOuter = null;
-              context.getters.CARDS.forEach(function (item, index, array) {
+              context.state.cards.forEach(function (item, index, array) {
                 if (item.note_id == payload) {
                   indexOuter = index;
                 }
               });
-              context.getters.CARDS.splice(indexOuter, 1);
+              context.commit("DELETE_CARD", indexOuter);
+              context.commit("SAVE_CARDS");
+              return _context2.abrupt("return", data != undefined ? data : {
+                answer: "Заметка удалена!"
+              });
 
-            case 11:
-              context.commit('SAVE_CARDS');
-
-            case 12:
+            case 10:
             case "end":
               return _context2.stop();
           }
@@ -18494,8 +18531,8 @@ var actions = {
         while (1) {
           switch (_context3.prev = _context3.next) {
             case 0:
-              if (!(context.getters.USER.user_id !== -1)) {
-                _context3.next = 8;
+              if (!(context.rootState.user.user.user_id !== -1)) {
+                _context3.next = 10;
                 break;
               }
 
@@ -18504,35 +18541,36 @@ var actions = {
                 title: payload.title,
                 subtitle: payload.subtitle,
                 text: payload.text,
-                user_id: context.getters.USER.user_id
+                user_id: context.rootState.user.user.user_id
               }, {
                 headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
+                  "Content-Type": "application/x-www-form-urlencoded"
                 }
               });
 
             case 3:
               _ref3 = _context3.sent;
               data = _ref3.data;
+              context.dispatch("GET_CARDS");
+              context.commit("SAVE_CARDS");
               return _context3.abrupt("return", data);
 
-            case 8:
+            case 10:
               card = {
-                note_id: context.getters.CARDS.length,
-                title: payload.title,
+                note_id: new Date().getTime(),
+                title: payload.title.trim() == "" ? "Заметка #" + new Date().getTime() : payload.title,
                 subtitle: payload.subtitle,
-                text: payload.text
+                text: payload.text,
+                creation_date: new Date().getTime() / 1000
               };
-              context.commit('ADD_CARD', card);
+              context.commit("ADD_CARD", card);
+              context.commit("SAVE_CARDS");
               return _context3.abrupt("return", {
                 answer: "Заметка добавлена!",
                 code: "200"
               });
 
-            case 11:
-              context.commit('SAVE_CARDS');
-
-            case 12:
+            case 14:
             case "end":
               return _context3.stop();
           }
@@ -18619,10 +18657,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
 var state = {
-  user: {
-    user_id: -1,
-    name: 'Гость'
-  }
+  user: JSON.parse(localStorage.getItem("user"))
 };
 var getters = {
   USER: function USER(state) {
@@ -18631,31 +18666,29 @@ var getters = {
 };
 var mutations = {
   SET_USER: function SET_USER(state, payload) {
-    localStorage.setItem('user', JSON.stringify(payload));
+    localStorage.setItem("user", JSON.stringify(payload));
     state.user = payload;
   }
 };
 var actions = {
   GET_USER: function GET_USER(context, payload) {
-    console.log(context.getters.USER);
-    axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + '/user', context.getters.USER, {
+    axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + "/user", context.rootState.user.user, {
       headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
+        "Content-Type": "application/x-www-form-urlencoded"
       }
     }).then(function (response) {
       if (response.data.code === "200") {
-        context.commit('SET_USER', response.data.answer);
+        context.commit("SET_USER", response.data.answer);
       } else {
-        context.commit('SET_USER', {
+        context.commit("SET_USER", {
           user_id: -1,
-          name: 'Гость'
+          name: "Гость"
         });
       }
     })["catch"](function (error) {
-      console.log(error);
-      context.commit('SET_USER', {
+      context.commit("SET_USER", {
         user_id: -1,
-        name: 'Гость'
+        name: "Гость"
       });
     });
   },
@@ -18675,7 +18708,7 @@ var actions = {
                 password: payload.password
               }, {
                 headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
+                  "Content-Type": "application/x-www-form-urlencoded"
                 }
               });
 
@@ -18709,9 +18742,9 @@ var actions = {
           switch (_context2.prev = _context2.next) {
             case 0:
               _context2.next = 2;
-              return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + '/user/logout', context.getters.USER, {
+              return axios__WEBPACK_IMPORTED_MODULE_2___default.a.post(context.getters.BACKEND_URL + "/user/logout", context.rootState.user.user, {
                 headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
+                  "Content-Type": "application/x-www-form-urlencoded"
                 }
               });
 
@@ -18720,20 +18753,19 @@ var actions = {
               data = _ref2.data;
 
               if (data.code == "200") {
-                alert(data.answer);
-                context.commit('CLEAR_CARDS');
+                context.commit("CLEAR_CARDS");
 
-                if (context.getters.USER !== null) {
-                  context.commit('SET_USER', {
+                if (context.rootState.user.user !== null) {
+                  context.commit("SET_USER", {
                     user_id: -1,
-                    name: 'Гость'
+                    name: "Гость"
                   });
                 }
-              } else {
-                alert(data.answer);
               }
 
-            case 5:
+              return _context2.abrupt("return", data);
+
+            case 6:
             case "end":
               return _context2.stop();
           }
@@ -18764,7 +18796,7 @@ var actions = {
                 name: payload.name
               }, {
                 headers: {
-                  'Content-Type': 'application/x-www-form-urlencoded'
+                  "Content-Type": "application/x-www-form-urlencoded"
                 }
               });
 
@@ -18788,9 +18820,9 @@ var actions = {
     return ADD_USER;
   }(),
   LOGIN_USER: function LOGIN_USER(context, payload) {
-    context.commit('CLEAR_ERRORS');
-    context.commit('CLEAR_CARDS');
-    context.commit('SET_USER', payload.data);
+    context.commit("CLEAR_ERRORS");
+    context.commit("CLEAR_CARDS");
+    context.commit("SET_USER", payload.data);
   }
 };
 /* harmony default export */ __webpack_exports__["default"] = ({

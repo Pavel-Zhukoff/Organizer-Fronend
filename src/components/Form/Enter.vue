@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
+import { mapState } from 'vuex';
 
 export default {
   props: {
@@ -33,31 +33,37 @@ export default {
       default: function () {
         return {
           action: {
-            url: '#',
+            url: "#",
           },
-          method: 'post',
-          text: 'Отправить',
+          method: "post",
+          text: "Отправить",
         };
       },
     },
   },
   data() {
     return {
-      email: '',
-      password: '',
-      errors: '',
+      email: "",
+      password: "",
     };
   },
-  mounted: function () {
-    this.errors = this.$store.getters.ERRORS;
+  created: function () {
+    this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
+    this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
   },
   watch: {
-    password: 'checkPasswordsEquality',
-    email: 'checkEmail',
+    password: "checkPasswordsEquality",
+    email: "checkEmail",
+  },
+  computed: {
+    ...mapState({
+      errors: (state) => state.error.errors,
+    }),
   },
   methods: {
     disabledSubmit: function () {
-      if (this.$store.getters.ERRORS.has("408")  || this.$store.getters.ERRORS.has("409")) {
+      if ( this.errors.has("408")
+        || this.errors.has("409") ) {
         return true;
        } else {
         return false;
@@ -65,21 +71,22 @@ export default {
     },
     formSubmit: function (event) {
       event.preventDefault();
-      this.$store.dispatch('GET_USER_BY_PASSWORD', {
+      this.$store.dispatch("GET_USER_BY_PASSWORD", {
         email: this.email,
         password: this.password,
         path: this.params.action.url
       })
       .then((data) => {
-        console.log(data);
         if (data.code === "200") {
-          this.$store.dispatch('LOGIN_USER', data);
-          event.target.reset();
-          this.$parent.closeModal();
+        this.$store.commit("CELAR_ERRORS");
+          this.$store.dispatch("LOGIN_USER", data);
+          this.$parent.$emit('close');
+          this.email = "";
+          this.password = "";
           alert(data.answer);
         } else {
-          if (!this.$store.getters.ERRORS.has(data.code)) {
-            this.$store.commit('ADD_ERROR', {id: data.code, text: data.answer});
+          if (!this.errors.has(data.code)) {
+            this.$store.commit("ADD_ERROR", {id: data.code, text: data.answer});
           }
         }
       });
@@ -87,17 +94,17 @@ export default {
     checkEmail: function () {
       const { email } = this;
       if (email.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '408', text: 'Заполните email!'});
+        this.$store.commit("ADD_ERROR", {id: "408", text: "Заполните email!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '408');
+        this.$store.commit("REMOVE_ERROR", "408");
       }
     },
     checkPasswordsEquality: function () {
       const { password } = this;
       if (password.length < 1) {
-        this.$store.commit('ADD_ERROR', {id: '409', text: 'Заполните пароль!'});
+        this.$store.commit("ADD_ERROR", {id: "409", text: "Заполните пароль!"});
       } else {
-        this.$store.commit('REMOVE_ERROR', '409');
+        this.$store.commit("REMOVE_ERROR", "409");
       }
     }
   }

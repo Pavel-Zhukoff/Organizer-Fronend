@@ -14,7 +14,7 @@
 </template>
 
 <script>
-import NavigationComponent from './Navigation.vue' ;
+import NavigationComponent from "./Navigation.vue" ;
 export default {
   props: {
     actions: Object
@@ -28,21 +28,21 @@ export default {
     userName: function () {
       if (this.$store.getters.USER.user_id !== -1) {
         this.links = new Map([
-          ['add', {action: this.actions.newNote, text: 'Добавить'}],
-          ['exit', {action: this.actions.logout, text: 'Выйти'}],
+          ["add", {action: this.actions.newNote, text: "Добавить"}],
+          ["exit", {action: this.actions.logout, text: "Выйти"}],
   			]);
       } else {
         this.links = new Map([
-          ['add', {action: this.actions.newNote, text: 'Добавить'}],
-          ['enter', {action: this.actions.login, text: 'Войти'}],
-          ['register', {action: this.actions.signup, text: 'Регистрация'}],
+          ["add", {action: this.actions.newNote, text: "Добавить"}],
+          ["enter", {action: this.actions.login, text: "Войти"}],
+          ["register", {action: this.actions.signup, text: "Регистрация"}],
   			]);
       }
       return  this.$store.getters.USER.name;
     },
   },
   components: {
-    'navigation': NavigationComponent
+    "navigation": NavigationComponent
   }
 }
 </script>

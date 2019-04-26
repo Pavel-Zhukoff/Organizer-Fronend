@@ -1,7 +1,5 @@
-import Axios from 'axios';
-
 let state = {
-  backendUrl: 'http://organizer-backend',
+  backendUrl: "http://organizer-backend",
 };
 
 let getters = {
