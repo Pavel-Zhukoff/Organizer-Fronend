@@ -17,7 +17,7 @@
 html {
   font-size: 16px;
   overflow-x: hidden;
-  
+
   @media screen and (max-width: map-get($grid-breakpoints, 'sm')) {
     font-size: 14px;
   }
@@ -225,13 +225,7 @@ nav {
 }
 
 .user-name {
-  cursor: pointer;
   text-decoration: underline;
-
-  &:hover {
-    color: map-get($colors, 'subheading');
-    text-decoration: none;
-  }
 }
 
 .form-group {
